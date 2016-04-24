@@ -1,7 +1,7 @@
 pkgname=calamares
 _pointver=0
 pkgver=2.0.${_pointver}
-pkgrel=8
+pkgrel=9
 pkgdesc='Distribution-independent installer framework'
 arch=('i686' 'x86_64')
 license=(GPL)
@@ -16,7 +16,7 @@ backup=('usr/share/calamares/modules/bootloader.conf'
 
 source=("calamares.tar.gz")
 
-sha256sums=('6fb3e17835f5602fd7de87315dd4f097f2f1e700c1aae69a58e619dc7c8ec3e9')
+sha256sums=('SKIP')
 
 prepare() {
 	cd "$srcdir/$pkgname"
