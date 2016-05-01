@@ -245,6 +245,6 @@ def run():
     fw_type = libcalamares.globalstorage.value("firmwareType")
     prepare_bootloader(fw_type)
 
-    target_env_call(["/etc/apricity-assets/postinstall.sh"])
+    #target_env_call(["/etc/apricity-assets/postinstall.sh"])
 
     return None
