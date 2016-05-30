@@ -31,12 +31,11 @@ calamares_add_plugin( partition
         core/PartitionIterator.cpp
         core/PartitionModel.cpp
         core/PartUtils.cpp
-        gui/BootInfoWidget.cpp
         gui/ChoicePage.cpp
         gui/CreatePartitionDialog.cpp
-        gui/DeviceInfoWidget.cpp
         gui/EditExistingPartitionDialog.cpp
-        gui/EncryptWidget.cpp
+        gui/BootInfoWidget.cpp
+        gui/DeviceInfoWidget.cpp
         gui/PartitionPage.cpp
         gui/PartitionBarsView.cpp
         gui/PartitionLabelsView.cpp
@@ -63,7 +62,6 @@ calamares_add_plugin( partition
         gui/CreatePartitionDialog.ui
         gui/CreatePartitionTableDialog.ui
         gui/EditExistingPartitionDialog.ui
-        gui/EncryptWidget.ui
         gui/PartitionPage.ui
         gui/ReplaceWidget.ui
     LINK_LIBRARIES

@@ -30,7 +30,7 @@ def mount_partitions(root_mount_point, partitions):
     :param partitions:
     """
     for partition in partitions:
-        if "mountPoint" not in partition or not partition["mountPoint"]:
+        if not partition["mountPoint"]:
             continue
         # Create mount point with `+` rather than `os.path.join()` because
         # `partition["mountPoint"]` starts with a '/'.
@@ -40,20 +40,11 @@ def mount_partitions(root_mount_point, partitions):
         if fstype == "fat16" or fstype == "fat32":
             fstype = "vfat"
 
-        if "luksMapperName" in partition:
-            libcalamares.utils.debug("about to mount {!s}".format(partition["luksMapperName"]))
-            libcalamares.utils.mount("/dev/mapper/{!s}".format(partition["luksMapperName"]),
-                                     mount_point,
-                                     fstype,
-                                     partition.get("options", ""),
-                                     )
-
-        else:
-            libcalamares.utils.mount(partition["device"],
-                                     mount_point,
-                                     fstype,
-                                     partition.get("options", ""),
-                                     )
+        libcalamares.utils.mount(partition["device"],
+                                 mount_point,
+                                 fstype,
+                                 partition.get("options", ""),
+                                 )
 
 
 def run():

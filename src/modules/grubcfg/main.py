@@ -44,23 +44,11 @@ def modify_grub_default(partitions, root_mount_point, distributor):
     if plymouth_bin == 0:
         use_splash = "splash"
 
-    cryptdevice_params = []
-
     for partition in partitions:
         if partition["fs"] == "linuxswap":
             swap_uuid = partition["uuid"]
 
-        if partition["mountPoint"] == "/" and "luksMapperName" in partition:
-            cryptdevice_params = [
-                "cryptdevice=UUID={!s}:{!s}".format(partition["luksUuid"],
-                                                    partition["luksMapperName"]),
-                "root=/dev/mapper/{!s}".format(partition["luksMapperName"])
-            ]
-
     kernel_params = ["quiet"]
-
-    if cryptdevice_params:
-        kernel_params.extend(cryptdevice_params)
 
     if use_splash:
         kernel_params.append(use_splash)
@@ -134,9 +122,6 @@ def modify_grub_default(partitions, root_mount_point, distributor):
 
     if not have_distributor_line:
         lines.append(distributor_line)
-
-    if cryptdevice_params:
-        lines.append("GRUB_ENABLE_CRYPTODISK=y")
 
     with open(default_grub, 'w') as grub_file:
         grub_file.write("\n".join(lines) + "\n")

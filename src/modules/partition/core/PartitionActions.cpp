@@ -98,7 +98,7 @@ swapSuggestion( const qint64 availableSpaceB )
 
 
 void
-doAutopartition( PartitionCoreModule* core, Device* dev, const QString& luksPassphrase )
+doAutopartition( PartitionCoreModule* core, Device* dev )
 {
     bool isEfi = false;
     if ( QDir( "/sys/firmware/efi/efivars" ).exists() )
@@ -167,60 +167,28 @@ doAutopartition( PartitionCoreModule* core, Device* dev, const QString& luksPass
         lastSectorForRoot -= suggestedSwapSizeB / dev->logicalSectorSize() + 1;
     }
 
-    Partition* rootPartition = nullptr;
-    if ( luksPassphrase.isEmpty() )
-    {
-        rootPartition = KPMHelpers::createNewPartition(
-            dev->partitionTable(),
-            *dev,
-            PartitionRole( PartitionRole::Primary ),
-            FileSystem::Ext4,
-            firstFreeSector,
-            lastSectorForRoot
-        );
-    }
-    else
-    {
-        rootPartition = KPMHelpers::createNewEncryptedPartition(
-            dev->partitionTable(),
-            *dev,
-            PartitionRole( PartitionRole::Primary ),
-            FileSystem::Ext4,
-            firstFreeSector,
-            lastSectorForRoot,
-            luksPassphrase
-       );
-    }
+    Partition* rootPartition = KPMHelpers::createNewPartition(
+        dev->partitionTable(),
+        *dev,
+        PartitionRole( PartitionRole::Primary ),
+        FileSystem::Ext4,
+        firstFreeSector,
+        lastSectorForRoot
+    );
     PartitionInfo::setFormat( rootPartition, true );
     PartitionInfo::setMountPoint( rootPartition, "/" );
     core->createPartition( dev, rootPartition );
 
     if ( shouldCreateSwap )
     {
-        Partition* swapPartition = nullptr;
-        if ( luksPassphrase.isEmpty() )
-        {
-            swapPartition = KPMHelpers::createNewPartition(
-                dev->partitionTable(),
-                *dev,
-                PartitionRole( PartitionRole::Primary ),
-                FileSystem::LinuxSwap,
-                lastSectorForRoot + 1,
-                dev->totalSectors() - 1
-            );
-        }
-        else
-        {
-            swapPartition = KPMHelpers::createNewEncryptedPartition(
-                dev->partitionTable(),
-                *dev,
-                PartitionRole( PartitionRole::Primary ),
-                FileSystem::LinuxSwap,
-                lastSectorForRoot + 1,
-                dev->totalSectors() - 1,
-                luksPassphrase
-            );
-        }
+        Partition* swapPartition = KPMHelpers::createNewPartition(
+            dev->partitionTable(),
+            *dev,
+            PartitionRole( PartitionRole::Primary ),
+            FileSystem::LinuxSwap,
+            lastSectorForRoot + 1,
+            dev->totalSectors() - 1
+        );
         PartitionInfo::setFormat( swapPartition, true );
         core->createPartition( dev, swapPartition );
     }

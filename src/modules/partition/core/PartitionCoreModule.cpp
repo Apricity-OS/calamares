@@ -112,12 +112,11 @@ void
 PartitionCoreModule::init()
 {
     CoreBackend* backend = CoreBackendManager::self()->backend();
-    QList< Device* > devices = backend->scanDevices( true );
+    auto devices = backend->scanDevices( true );
 
     // Remove the device which contains / from the list
-    for ( QList< Device* >::iterator it = devices.begin(); it != devices.end(); )
-        if ( hasRootPartition( *it ) ||
-             (*it)->deviceNode().startsWith( "/dev/zram") )
+    for ( auto it = devices.begin(); it != devices.end(); )
+        if ( hasRootPartition( *it ) )
             it = devices.erase( it );
         else
             ++it;
@@ -178,9 +177,7 @@ PartitionCoreModule::createImmutableDeviceCopy( Device* device )
 {
     CoreBackend* backend = CoreBackendManager::self()->backend();
 
-    QString node = device->deviceNode();
-    cDebug() << "Creating immutable copy for node:" << node;
-    Device* deviceBefore = backend->scanDevice( node );
+    Device* deviceBefore = backend->scanDevice( device->deviceNode() );
     return deviceBefore;
 }
 

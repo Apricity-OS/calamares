@@ -74,10 +74,9 @@ signals:
 private slots:
     void doReplaceSelectedPartition( const QModelIndex& current, const QModelIndex& previous );
     void doAlongsideSetupSplitter( const QModelIndex& current, const QModelIndex& previous );
-    void onEncryptWidgetStateChanged();
 
 private:
-    void updateNextEnabled();
+    void setNextEnabled( bool enabled );
     void setupChoices();
     QComboBox* createBootloaderComboBox( QWidget* parentButton );
     Device* selectedDevice();

@@ -27,7 +27,6 @@
 #include <kpmcore/core/partition.h>
 #include <kpmcore/util/report.h>
 
-#include <QDir>
 #include <QProcess>
 #include <QStringList>
 
@@ -100,14 +99,6 @@ ClearMountsJob::exec()
         *it = (*it).simplified().split( ' ' ).first();
     }
 
-    foreach ( QString mapperPath, getCryptoDevices() )
-    {
-        tryUmount( mapperPath );
-        QString news = tryCryptoClose( mapperPath );
-        if ( !news.isEmpty() )
-            goodNews.append( news );
-    }
-
     // First we umount all LVM logical volumes we can find
     process.start( "lvscan", { "-a" } );
     process.waitForFinished();
@@ -159,14 +150,6 @@ ClearMountsJob::exec()
     }
     else
         cDebug() << "WARNING: this system does not seem to have LVM2 tools.";
-
-    foreach ( QString mapperPath, getCryptoDevices() )
-    {
-        tryUmount( mapperPath );
-        QString news = tryCryptoClose( mapperPath );
-        if ( !news.isEmpty() )
-            goodNews.append( news );
-    }
 
     foreach ( QString p, partitionsList )
     {
@@ -230,34 +213,4 @@ ClearMountsJob::tryClearSwap( const QString& partPath )
         return QString();
 
     return QString( "Successfully cleared swap %1." ).arg( partPath );
-}
-
-
-QString
-ClearMountsJob::tryCryptoClose( const QString& mapperPath )
-{
-    QProcess process;
-    process.start( "cryptsetup", { "close", mapperPath } );
-    process.waitForFinished();
-    if ( process.exitCode() == 0 )
-        return QString( "Successfully closed mapper device %1." ).arg( mapperPath );
-
-    return QString();
-}
-
-
-QStringList
-ClearMountsJob::getCryptoDevices()
-{
-    QDir mapperDir( "/dev/mapper" );
-    QFileInfoList fiList = mapperDir.entryInfoList( QDir::Files );
-    QStringList list;
-    QProcess process;
-    foreach ( QFileInfo fi, fiList )
-    {
-        if ( fi.baseName() == "control" )
-            continue;
-        list.append( fi.absoluteFilePath() );
-    }
-    return list;
 }
