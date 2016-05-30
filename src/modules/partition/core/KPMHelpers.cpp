@@ -1,7 +1,7 @@
 /* === This file is part of Calamares - <http://github.com/calamares> ===
  *
- *   Copyright 2014, Aurélien Gâteau <agateau@kde.org>
- *   Copyright 2015, Teo Mrnjavac <teo@kde.org>
+ *   Copyright 2014,      Aurélien Gâteau <agateau@kde.org>
+ *   Copyright 2015-2016, Teo Mrnjavac <teo@kde.org>
  *
  *   Calamares is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include <kpmcore/core/partition.h>
 #include <kpmcore/fs/filesystemfactory.h>
 #include <kpmcore/backend/corebackendmanager.h>
+#include <kpmcore/fs/luks.h>
 
 #include <QDebug>
 
@@ -83,6 +84,9 @@ findPartitionByMountPoint( const QList< Device* >& devices, const QString& mount
 Partition*
 findPartitionByPath( const QList< Device* >& devices, const QString& path )
 {
+    if ( path.simplified().isEmpty() )
+        return nullptr;
+
     for ( auto device : devices )
         for ( auto it = PartitionIterator::begin( device ); it != PartitionIterator::end( device ); ++it )
             if ( ( *it )->partitionPath() == path.simplified() )
@@ -105,7 +109,13 @@ findPartitions( const QList< Device* >& devices,
 
 
 Partition*
-createNewPartition( PartitionNode* parent, const Device& device, const PartitionRole& role, FileSystem::Type fsType, qint64 firstSector, qint64 lastSector )
+createNewPartition( PartitionNode* parent,
+                    const Device& device,
+                    const PartitionRole& role,
+                    FileSystem::Type fsType,
+                    qint64 firstSector,
+                    qint64 lastSector,
+                    PartitionTable::Flags flags )
 {
     FileSystem* fs = FileSystemFactory::create( fsType, firstSector, lastSector );
     return new Partition(
@@ -117,9 +127,43 @@ createNewPartition( PartitionNode* parent, const Device& device, const Partition
                PartitionTable::FlagNone /* availableFlags */,
                QString() /* mountPoint */,
                false /* mounted */,
-               PartitionTable::FlagNone /* activeFlags */,
+               flags /* activeFlags */,
                Partition::StateNew
            );
+}
+
+
+Partition*
+createNewEncryptedPartition( PartitionNode* parent,
+                             const Device& device,
+                             const PartitionRole& role,
+                             FileSystem::Type fsType,
+                             qint64 firstSector,
+                             qint64 lastSector,
+                             const QString& passphrase,
+                             PartitionTable::Flags flags )
+{
+    PartitionRole::Roles newRoles = role.roles();
+    if ( !role.has( PartitionRole::Luks ) )
+        newRoles |= PartitionRole::Luks;
+
+    FS::luks* fs = dynamic_cast< FS::luks* >(
+                           FileSystemFactory::create( FileSystem::Luks,
+                                                      firstSector,
+                                                      lastSector ) );
+    fs->createInnerFileSystem( fsType );
+    fs->setPassphrase( passphrase );
+    Partition* p = new Partition( parent,
+                                  device,
+                                  PartitionRole( newRoles ),
+                                  fs, fs->firstSector(), fs->lastSector(),
+                                  QString() /* path */,
+                                  PartitionTable::FlagNone /* availableFlags */,
+                                  QString() /* mountPoint */,
+                                  false /* mounted */,
+                                  flags /* activeFlags */,
+                                  Partition::StateNew );
+    return p;
 }
 
 
@@ -131,13 +175,14 @@ clonePartition( Device* device, Partition* partition )
                          partition->firstSector(),
                          partition->lastSector()
                      );
-    return new Partition(
-               partition->parent(),
-               *device,
-               partition->roles(),
-               fs, fs->firstSector(), fs->lastSector(),
-               partition->partitionPath()
-                );
+    return new Partition( partition->parent(),
+                          *device,
+                          partition->roles(),
+                          fs,
+                          fs->firstSector(),
+                          fs->lastSector(),
+                          partition->partitionPath(),
+                          partition->activeFlags() );
 }
 
 
@@ -153,7 +198,7 @@ prettyNameForFileSystemType( FileSystem::Type t )
     case FileSystem::Unformatted:
         return QObject::tr( "unformatted" );
     case FileSystem::LinuxSwap:
-        return "swap";
+        return QObject::tr( "swap" );
     case FileSystem::Fat16:
     case FileSystem::Fat32:
     case FileSystem::Ntfs:

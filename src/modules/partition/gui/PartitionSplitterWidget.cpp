@@ -48,6 +48,7 @@ PartitionSplitterWidget::PartitionSplitterWidget( QWidget* parent )
     , m_itemPrefSize( 0 )
     , m_resizeHandleX( 0 )
     , HANDLE_SNAP( QApplication::startDragDistance() )
+    , m_drawNestedPartitions( false )
 {
     setMouseTracking( true );
 }
@@ -121,7 +122,7 @@ PartitionSplitterWidget::setSplitPartition( const QString& path,
              << "\nmaxSize:" << maxSize
              << "\nprfSize:" << preferredSize;
 
-    if ( m_itemToResize || m_itemToResizeNext || !m_itemToResizePath.isEmpty() )
+    if ( m_itemToResize && m_itemToResizeNext )
     {
         cDebug() << "NOTICE: trying to split partition but partition to split is already set.";
 

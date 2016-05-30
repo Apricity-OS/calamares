@@ -47,6 +47,7 @@ Settings::Settings( const QString& settingsFilePath,
     : QObject( parent )
     , m_debug( debugMode )
     , m_promptInstall( false )
+    , m_doChroot( true )
 {
     cDebug() << "Using Calamares settings file at" << settingsFilePath;
     QFile file( settingsFilePath );
@@ -148,7 +149,7 @@ Settings::Settings( const QString& settingsFilePath,
                                                               .as< std::string >() );
             m_promptInstall = config[ "prompt-install" ].as< bool >();
 
-            m_doChroot = !config[ "dont-chroot" ].as< bool >();
+            m_doChroot = config[ "dont-chroot" ] ? !config[ "dont-chroot" ].as< bool >() : true;
         }
         catch ( YAML::Exception& e )
         {

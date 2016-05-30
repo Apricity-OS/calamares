@@ -71,6 +71,7 @@ ChoicePage::ChoicePage( QWidget* parent )
     , m_choice( NoChoice )
     , m_nextEnabled( false )
     , m_core( nullptr )
+    , m_grp( nullptr )
     , m_alongsideButton( nullptr )
     , m_eraseButton( nullptr )
     , m_replaceButton( nullptr )
@@ -120,6 +121,7 @@ ChoicePage::ChoicePage( QWidget* parent )
     m_previewAfterFrame->setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Expanding );
     m_previewAfterLabel->hide();
     m_previewAfterFrame->hide();
+    m_encryptWidget->hide();
     // end
 }
 
@@ -155,6 +157,9 @@ ChoicePage::init( PartitionCoreModule* core )
     connect( m_drivesCombo,
              static_cast< void ( QComboBox::* )( int ) >( &QComboBox::currentIndexChanged ),
              this, &ChoicePage::applyDeviceChoice );
+
+    connect( m_encryptWidget, &EncryptWidget::stateChanged,
+             this, &ChoicePage::onEncryptWidgetStateChanged );
 
     ChoicePage::applyDeviceChoice();
 }
@@ -237,14 +242,8 @@ ChoicePage::setupChoices()
         if ( checked )  // An action was picked.
         {
             m_choice = static_cast< Choice >( id );
-            if ( m_choice == Replace )
-            {
-                setNextEnabled( false );
-            }
-            else
-            {
-                setNextEnabled( true );
-            }
+            updateNextEnabled();
+
             emit actionChosen();
         }
         else    // An action was unpicked, either on its own or because of another selection.
@@ -252,7 +251,8 @@ ChoicePage::setupChoices()
             if ( m_grp->checkedButton() == nullptr )  // If no other action is chosen, we must
             {                                         // set m_choice to NoChoice and reset previews.
                 m_choice = NoChoice;
-                setNextEnabled( false );
+                updateNextEnabled();
+
                 emit actionChosen();
             }
         }
@@ -368,14 +368,14 @@ ChoicePage::applyActionChoice( ChoicePage::Choice choice )
             } ),
             [ = ]
             {
-                PartitionActions::doAutopartition( m_core, selectedDevice() );
+                PartitionActions::doAutopartition( m_core, selectedDevice(), m_encryptWidget->passphrase() );
                 emit deviceChosen();
             },
             this );
         }
         else
         {
-            PartitionActions::doAutopartition( m_core, selectedDevice() );
+            PartitionActions::doAutopartition( m_core, selectedDevice(), m_encryptWidget->passphrase() );
             emit deviceChosen();
         }
 
@@ -391,7 +391,7 @@ ChoicePage::applyActionChoice( ChoicePage::Choice choice )
             []{},
             this );
         }
-        setNextEnabled( !m_beforePartitionBarsView->selectionModel()->selectedRows().isEmpty() );
+        updateNextEnabled();
 
         connect( m_beforePartitionBarsView->selectionModel(), SIGNAL( currentRowChanged( QModelIndex, QModelIndex ) ),
                  this, SLOT( doReplaceSelectedPartition( QModelIndex, QModelIndex ) ),
@@ -414,7 +414,7 @@ ChoicePage::applyActionChoice( ChoicePage::Choice choice )
             },
             this );
         }
-        setNextEnabled( !m_beforePartitionBarsView->selectionModel()->selectedRows().isEmpty() );
+        updateNextEnabled();
 
         connect( m_beforePartitionBarsView->selectionModel(), SIGNAL( currentRowChanged( QModelIndex, QModelIndex ) ),
                  this, SLOT( doAlongsideSetupSplitter( QModelIndex, QModelIndex ) ),
@@ -444,6 +444,11 @@ ChoicePage::doAlongsideSetupSplitter( const QModelIndex& current,
         return;
 
     Partition* part = modl->partitionForIndex( current );
+    if ( !part )
+    {
+        cDebug() << Q_FUNC_INFO << "Partition not found for index" << current;
+        return;
+    }
 
     double requiredStorageGB = Calamares::JobQueue::instance()
                                     ->globalStorage()
@@ -460,12 +465,26 @@ ChoicePage::doAlongsideSetupSplitter( const QModelIndex& current,
                 Calamares::Branding::instance()->
                     string( Calamares::Branding::ProductName ) );
 
-    setNextEnabled( m_beforePartitionBarsView->selectionModel()->currentIndex().isValid() );
+    updateNextEnabled();
 
     if ( m_isEfi )
         setupEfiSystemPartitionSelector();
 
     cDebug() << "Partition selected for Alongside.";
+}
+
+
+void
+ChoicePage::onEncryptWidgetStateChanged()
+{
+    EncryptWidget::State state = m_encryptWidget->state();
+    if ( m_choice == Erase )
+    {
+        if ( state == EncryptWidget::EncryptionConfirmed ||
+             state == EncryptWidget::EncryptionDisabled )
+            applyActionChoice( m_choice );
+    }
+    updateNextEnabled();
 }
 
 
@@ -572,22 +591,57 @@ ChoicePage::doReplaceSelectedPartition( const QModelIndex& current,
         {
             m_core->revertDevice( selectedDevice() );
         }
-        // We can't use the PartitionPtrRole because we need to make changes to the
-        // main DeviceModel, not the immutable copy.
-        QString partPath = current.data( PartitionModel::PartitionPathRole ).toString();
-        Partition* partition = KPMHelpers::findPartitionByPath( { selectedDevice() },
-                                                                partPath );
-        if ( partition )
-            PartitionActions::doReplacePartition( m_core,
-                                                  selectedDevice(),
-                                                  partition );
+
+        // if the partition is unallocated(free space), we don't replace it but create new one 
+        // with the same first and last sector
+        Partition* selectedPartition = (Partition *)( current.data( PartitionModel::PartitionPtrRole ).value< void* >() );
+        if ( KPMHelpers::isPartitionFreeSpace( selectedPartition ) )
+        {
+            PartitionRole newRoles = PartitionRole( PartitionRole::Primary );
+            PartitionNode* newParent = selectedDevice()->partitionTable();
+
+            if ( selectedPartition->parent() )
+            {
+                Partition* parent = dynamic_cast< Partition* >( selectedPartition->parent() );
+                if ( parent && parent->roles().has( PartitionRole::Extended ) )
+                {
+                    newRoles = PartitionRole( PartitionRole::Logical );
+                    newParent = KPMHelpers::findPartitionByPath( { selectedDevice() }, parent->partitionPath() );
+                }
+            }
+
+            Partition* newPartition = KPMHelpers::createNewPartition(
+                    newParent,
+                    *selectedDevice(),
+                    newRoles,
+                    FileSystem::Ext4,
+                    selectedPartition->firstSector(),
+                    selectedPartition->lastSector() );
+
+            PartitionInfo::setMountPoint( newPartition, "/" );
+            PartitionInfo::setFormat( newPartition, true );
+
+            m_core->createPartition( selectedDevice(), newPartition);
+        }
+        else
+        {
+            // We can't use the PartitionPtrRole because we need to make changes to the
+            // main DeviceModel, not the immutable copy.
+            QString partPath = current.data( PartitionModel::PartitionPathRole ).toString();
+            selectedPartition = KPMHelpers::findPartitionByPath( { selectedDevice() },
+                                                                    partPath );
+            if ( selectedPartition )
+                PartitionActions::doReplacePartition( m_core,
+                                                      selectedDevice(),
+                                                      selectedPartition );
+        }
     } ),
     [=]
     {
         if ( m_isEfi )
             setupEfiSystemPartitionSelector();
 
-        setNextEnabled( !m_beforePartitionBarsView->selectionModel()->selectedRows().isEmpty() );
+        updateNextEnabled();
         if ( !m_bootloaderComboBox.isNull() &&
              m_bootloaderComboBox->currentIndex() < 0 )
             m_bootloaderComboBox->setCurrentIndex( m_lastSelectedDeviceIndex );
@@ -729,10 +783,12 @@ ChoicePage::updateActionChoicePreview( ChoicePage::Choice choice )
             };
             m_beforePartitionBarsView->setSelectionFilter( filter );
             m_beforePartitionLabelsView->setSelectionFilter( filter );
+            m_encryptWidget->hide();
 
             break;
         }
     case Erase:
+        m_encryptWidget->show();
     case Replace:
         {
             m_previewBeforeLabel->setText( tr( "Current:" ) );
@@ -813,6 +869,7 @@ ChoicePage::updateActionChoicePreview( ChoicePage::Choice choice )
         m_previewAfterFrame->hide();
         m_previewBeforeLabel->setText( tr( "Current:" ) );
         m_previewAfterLabel->hide();
+        m_encryptWidget->hide();
         break;
     }
 
@@ -862,7 +919,7 @@ ChoicePage::setupEfiSystemPartitionSelector()
                         "partitioning to set up %1." )
                     .arg( Calamares::Branding::instance()->
                           string( Calamares::Branding::ShortProductName ) ) );
-        setNextEnabled( false );
+        updateNextEnabled();
     }
     else if ( efiSystemPartitions.count() == 1 ) //probably most usual situation
     {
@@ -945,6 +1002,19 @@ ChoicePage::setupActions()
         }
     }
 
+    bool atLeastOneCanBeReplaced = false;
+
+    for ( auto it = PartitionIterator::begin( currentDevice );
+          it != PartitionIterator::end( currentDevice ); ++it )
+    {
+        if ( PartUtils::canBeReplaced( *it ) )
+        {
+            atLeastOneCanBeReplaced = true;
+            break;
+        }
+    }
+
+
     if ( osproberEntriesForCurrentDevice.count() == 0 )
     {
         CALAMARES_RETRANSLATE(
@@ -956,6 +1026,16 @@ ChoicePage::setupActions()
             m_eraseButton->setText( tr( "<strong>Erase disk</strong><br/>"
                                         "This will <font color=\"red\">delete</font> all data "
                                         "currently present on the selected storage device." ) );
+
+            m_alongsideButton->setText( tr( "<strong>Install alongside</strong><br/>"
+                                            "The installer will shrink a partition to make room for %1." )
+                                        .arg( Calamares::Branding::instance()->
+                                              string( Calamares::Branding::ShortVersionedName ) ) );
+
+            m_replaceButton->setText( tr( "<strong>Replace a partition</strong><br/>"
+                                          "Replaces a partition with %1." )
+                                      .arg( Calamares::Branding::instance()->
+                                            string( Calamares::Branding::ShortVersionedName ) ) );
         )
 
         m_replaceButton->hide();
@@ -1068,6 +1148,26 @@ ChoicePage::setupActions()
         }
     }
 
+    if ( atLeastOneCanBeReplaced )
+        m_replaceButton->show();
+    else
+    {
+        m_replaceButton->hide();
+        m_grp->setExclusive( false );
+        m_replaceButton->buttonWidget()->setChecked( false );
+        m_grp->setExclusive( true );
+    }
+
+    if ( atLeastOneCanBeResized )
+        m_alongsideButton->show();
+    else
+    {
+        m_alongsideButton->hide();
+        m_grp->setExclusive( false );
+        m_alongsideButton->buttonWidget()->setChecked( false );
+        m_grp->setExclusive( true );
+    }
+
     bool isEfi = QDir( "/sys/firmware/efi/efivars" ).exists();
     bool efiSystemPartitionFound = !m_core->efiSystemPartitions().isEmpty();
 
@@ -1109,8 +1209,42 @@ ChoicePage::currentChoice() const
 
 
 void
-ChoicePage::setNextEnabled( bool enabled )
+ChoicePage::updateNextEnabled()
 {
+    bool enabled = false;
+
+    switch ( m_choice )
+    {
+    case NoChoice:
+        enabled = false;
+        break;
+    case Replace:
+        enabled = !m_beforePartitionBarsView->selectionModel()->
+                  selectedRows().isEmpty();
+        break;
+    case Alongside:
+        enabled = !m_beforePartitionBarsView->selectionModel()->
+                  selectedRows().isEmpty() &&
+                  m_beforePartitionBarsView->selectionModel()->
+                  currentIndex().isValid();
+        break;
+    case Erase:
+    case Manual:
+        enabled = true;
+    }
+
+    if ( m_isEfi &&
+         ( m_choice == Alongside ||
+           m_choice == Replace ) )
+    {
+        if ( m_core->efiSystemPartitions().count() == 0 )
+            enabled = false;
+    }
+
+    if ( m_encryptWidget->isVisible() &&
+         m_encryptWidget->state() == EncryptWidget::EncryptionUnconfirmed )
+        enabled = false;
+
     if ( enabled == m_nextEnabled )
         return;
 

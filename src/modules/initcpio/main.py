@@ -19,7 +19,6 @@
 #   along with Calamares. If not, see <http://www.gnu.org/licenses/>.
 
 import libcalamares
-import subprocess
 from libcalamares.utils import check_target_env_call, target_env_call
 from libcalamares.utils import *
 

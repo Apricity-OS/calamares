@@ -98,7 +98,7 @@ swapSuggestion( const qint64 availableSpaceB )
 
 
 void
-doAutopartition( PartitionCoreModule* core, Device* dev )
+doAutopartition( PartitionCoreModule* core, Device* dev, const QString& luksPassphrase )
 {
     bool isEfi = false;
     if ( QDir( "/sys/firmware/efi/efivars" ).exists() )
@@ -167,28 +167,60 @@ doAutopartition( PartitionCoreModule* core, Device* dev )
         lastSectorForRoot -= suggestedSwapSizeB / dev->logicalSectorSize() + 1;
     }
 
-    Partition* rootPartition = KPMHelpers::createNewPartition(
-        dev->partitionTable(),
-        *dev,
-        PartitionRole( PartitionRole::Primary ),
-        FileSystem::Ext4,
-        firstFreeSector,
-        lastSectorForRoot
-    );
+    Partition* rootPartition = nullptr;
+    if ( luksPassphrase.isEmpty() )
+    {
+        rootPartition = KPMHelpers::createNewPartition(
+            dev->partitionTable(),
+            *dev,
+            PartitionRole( PartitionRole::Primary ),
+            FileSystem::Ext4,
+            firstFreeSector,
+            lastSectorForRoot
+        );
+    }
+    else
+    {
+        rootPartition = KPMHelpers::createNewEncryptedPartition(
+            dev->partitionTable(),
+            *dev,
+            PartitionRole( PartitionRole::Primary ),
+            FileSystem::Ext4,
+            firstFreeSector,
+            lastSectorForRoot,
+            luksPassphrase
+       );
+    }
     PartitionInfo::setFormat( rootPartition, true );
     PartitionInfo::setMountPoint( rootPartition, "/" );
     core->createPartition( dev, rootPartition );
 
     if ( shouldCreateSwap )
     {
-        Partition* swapPartition = KPMHelpers::createNewPartition(
-            dev->partitionTable(),
-            *dev,
-            PartitionRole( PartitionRole::Primary ),
-            FileSystem::LinuxSwap,
-            lastSectorForRoot + 1,
-            dev->totalSectors() - 1
-        );
+        Partition* swapPartition = nullptr;
+        if ( luksPassphrase.isEmpty() )
+        {
+            swapPartition = KPMHelpers::createNewPartition(
+                dev->partitionTable(),
+                *dev,
+                PartitionRole( PartitionRole::Primary ),
+                FileSystem::LinuxSwap,
+                lastSectorForRoot + 1,
+                dev->totalSectors() - 1
+            );
+        }
+        else
+        {
+            swapPartition = KPMHelpers::createNewEncryptedPartition(
+                dev->partitionTable(),
+                *dev,
+                PartitionRole( PartitionRole::Primary ),
+                FileSystem::LinuxSwap,
+                lastSectorForRoot + 1,
+                dev->totalSectors() - 1,
+                luksPassphrase
+            );
+        }
         PartitionInfo::setFormat( swapPartition, true );
         core->createPartition( dev, swapPartition );
     }
@@ -201,9 +233,22 @@ void
 doReplacePartition( PartitionCoreModule* core, Device* dev, Partition* partition )
 {
     cDebug() << "doReplacePartition for device" << partition->partitionPath();
+
     PartitionRole newRoles( partition->roles() );
     if ( partition->roles().has( PartitionRole::Extended ) )
         newRoles = PartitionRole( PartitionRole::Primary );
+
+    if ( partition->roles().has( PartitionRole::Unallocated ) )
+    {
+        newRoles = PartitionRole( PartitionRole::Primary );
+        cDebug() << "WARNING: selected partition is free space";
+        if ( partition->parent() )
+        {
+            Partition* parent = dynamic_cast< Partition* >( partition->parent() );
+            if ( parent && parent->roles().has( PartitionRole::Extended ) )
+                newRoles = PartitionRole( PartitionRole::Logical );
+        }
+    }
 
     Partition* newPartition = KPMHelpers::createNewPartition(
                                   partition->parent(),
@@ -215,7 +260,8 @@ doReplacePartition( PartitionCoreModule* core, Device* dev, Partition* partition
     PartitionInfo::setMountPoint( newPartition, "/" );
     PartitionInfo::setFormat( newPartition, true );
 
-    core->deletePartition( dev, partition );
+    if ( !partition->roles().has( PartitionRole::Unallocated ) )
+        core->deletePartition( dev, partition );
     core->createPartition( dev, newPartition );
 
     core->dumpQueue();

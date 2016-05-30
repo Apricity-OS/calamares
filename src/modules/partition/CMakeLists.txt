@@ -10,11 +10,12 @@ find_package( KF5 REQUIRED CoreAddons )
 # These are needed because KPMcore links publicly against ConfigCore, I18n, IconThemes, KIOCore and Service
 find_package( KF5 REQUIRED Config I18n IconThemes KIO Service )
 
-find_package( KPMcore 2.0 REQUIRED )
+find_package( KPMcore 2.1 REQUIRED )
 
 add_subdirectory( tests )
 
 include_directories( ${PROJECT_BINARY_DIR}/src/libcalamaresui )
+include_directories( ${KPMCORE_INCLUDE_DIR} )
 
 calamares_add_plugin( partition
     TYPE viewmodule
@@ -30,11 +31,12 @@ calamares_add_plugin( partition
         core/PartitionIterator.cpp
         core/PartitionModel.cpp
         core/PartUtils.cpp
+        gui/BootInfoWidget.cpp
         gui/ChoicePage.cpp
         gui/CreatePartitionDialog.cpp
-        gui/EditExistingPartitionDialog.cpp
-        gui/BootInfoWidget.cpp
         gui/DeviceInfoWidget.cpp
+        gui/EditExistingPartitionDialog.cpp
+        gui/EncryptWidget.cpp
         gui/PartitionPage.cpp
         gui/PartitionBarsView.cpp
         gui/PartitionLabelsView.cpp
@@ -55,11 +57,13 @@ calamares_add_plugin( partition
         jobs/MoveFileSystemJob.cpp
         jobs/PartitionJob.cpp
         jobs/ResizePartitionJob.cpp
+        jobs/SetPartitionFlagsJob.cpp
     UI
         gui/ChoicePage.ui
         gui/CreatePartitionDialog.ui
         gui/CreatePartitionTableDialog.ui
         gui/EditExistingPartitionDialog.ui
+        gui/EncryptWidget.ui
         gui/PartitionPage.ui
         gui/ReplaceWidget.ui
     LINK_LIBRARIES

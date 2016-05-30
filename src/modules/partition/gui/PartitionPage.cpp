@@ -91,8 +91,8 @@ PartitionPage::PartitionPage( PartitionCoreModule* core, QWidget* parent )
     connect( m_ui->deleteButton, &QAbstractButton::clicked, this, &PartitionPage::onDeleteClicked );
 
     if ( QDir( "/sys/firmware/efi/efivars" ).exists() ) {
-        m_ui->bootLoaderComboBox->setDisabled( true );
-        m_ui->label_3->setDisabled( true );
+        m_ui->bootLoaderComboBox->hide();
+        m_ui->label_3->hide();
     }
     
     CALAMARES_RETRANSLATE( m_ui->retranslateUi( this ); )
@@ -167,7 +167,10 @@ PartitionPage::onCreateClicked()
     QPointer<CreatePartitionDialog> dlg = new CreatePartitionDialog( model->device(), partition->parent(), this );
     dlg->initFromFreeSpace( partition );
     if ( dlg->exec() == QDialog::Accepted )
-        m_core->createPartition( model->device(), dlg->createPartition() );
+    {
+        Partition* newPart = dlg->createPartition();
+        m_core->createPartition( model->device(), newPart, dlg->newFlags() );
+    }
     delete dlg;
 }
 
@@ -250,7 +253,7 @@ PartitionPage::updatePartitionToCreate( Device* device, Partition* partition )
     {
         Partition* newPartition = dlg->createPartition();
         m_core->deletePartition( device, partition );
-        m_core->createPartition( device, newPartition );
+        m_core->createPartition( device, newPartition, dlg->newFlags() );
     }
     delete dlg;
 }
