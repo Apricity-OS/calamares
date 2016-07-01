@@ -65,6 +65,7 @@ public:
     Choice currentChoice() const;
 
     void onLeave();
+    void applyActionChoice( ChoicePage::Choice choice );
 
 signals:
     void nextStatusChanged( bool );
@@ -74,16 +75,16 @@ signals:
 private slots:
     void doReplaceSelectedPartition( const QModelIndex& current, const QModelIndex& previous );
     void doAlongsideSetupSplitter( const QModelIndex& current, const QModelIndex& previous );
+    void onEncryptWidgetStateChanged();
 
 private:
-    void setNextEnabled( bool enabled );
+    void updateNextEnabled();
     void setupChoices();
     QComboBox* createBootloaderComboBox( QWidget* parentButton );
     Device* selectedDevice();
     void applyDeviceChoice();
     void continueApplyDeviceChoice();
     void updateDeviceStatePreview();
-    void applyActionChoice( ChoicePage::Choice choice );
     void updateActionChoicePreview( ChoicePage::Choice choice );
     void setupActions();
     OsproberEntryList getOsproberEntriesForDevice( Device* device ) const;
@@ -118,6 +119,8 @@ private:
     QPointer< QComboBox > m_efiComboBox;
 
     int m_lastSelectedDeviceIndex;
+
+    QString m_defaultFsType;
 
     QMutex m_coreMutex;
 };

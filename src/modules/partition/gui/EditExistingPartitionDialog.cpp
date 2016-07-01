@@ -100,7 +100,9 @@ EditExistingPartitionDialog::EditExistingPartitionDialog( Device* device, Partit
     if ( fsNames.contains( m_partition->fileSystem().name() ) )
         m_ui->fileSystemComboBox->setCurrentText( m_partition->fileSystem().name() );
     else
-        m_ui->fileSystemComboBox->setCurrentText( FileSystem::nameForType( FileSystem::Ext4 ) );
+        m_ui->fileSystemComboBox->setCurrentText( Calamares::JobQueue::instance()->
+                                                      globalStorage()->
+                                                      value( "defaultFileSystemType" ).toString() );
 
     m_ui->fileSystemLabel->setEnabled( m_ui->formatRadioButton->isChecked() );
     m_ui->fileSystemComboBox->setEnabled( m_ui->formatRadioButton->isChecked() );
@@ -159,6 +161,11 @@ EditExistingPartitionDialog::applyChanges( PartitionCoreModule* core )
     qint64 newLastSector  = m_partitionSizeController->lastSector();
     bool partResizedMoved = newFirstSector != m_partition->firstSector() ||
                             newLastSector  != m_partition->lastSector();
+
+    cDebug() << "old boundaries:" << m_partition->firstSector()
+             << m_partition->lastSector() << m_partition->length();
+    cDebug() << "new boundaries:" << newFirstSector << newLastSector;
+    cDebug() << "dirty status:" << m_partitionSizeController->isDirty();
 
     FileSystem::Type fsType = FileSystem::Unknown;
     if ( m_ui->formatRadioButton->isChecked() )

@@ -391,17 +391,17 @@ Diegimo programa užbaigs darbą ir visi pakeitimai bus prarasti.</translation>
         <translation>Po:</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="223"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="227"/>
         <source>&lt;strong&gt;Manual partitioning&lt;/strong&gt;&lt;br/&gt;You can create or resize partitions yourself.</source>
         <translation>&lt;strong&gt;Rankinis skaidymas&lt;/strong&gt;&lt;br/&gt;Galite patys kurti ar keisti skaidinių dydžius.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="808"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="853"/>
         <source>Boot loader location:</source>
         <translation>Paleidyklės vieta:</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="755"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="798"/>
         <source>%1 will be shrunk to %2MB and a new %3MB partition will be created for %4.</source>
         <translation>%1 bus sumažintas iki %2MB ir naujas %3MB skaidinys bus sukurtas sistemai %4.</translation>
     </message>
@@ -412,78 +412,78 @@ Diegimo programa užbaigs darbą ir visi pakeitimai bus prarasti.</translation>
     </message>
     <message>
         <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="116"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="740"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="779"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="855"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="783"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="824"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="900"/>
         <source>Current:</source>
         <translation>Dabartinis:</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="741"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="784"/>
         <source>&lt;strong&gt;Select a partition to shrink, then drag the bottom bar to resize&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;Pasirinkite, kurį skaidinį sumažinti, o tuomet vilkite juostą, kad pakeistumėte skaidinio dydį&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="846"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="891"/>
         <source>&lt;strong&gt;Select a partition to install on&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;Pasirinkite kuriame skaidinyje įdiegti&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="901"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="947"/>
         <source>An EFI system partition cannot be found anywhere on this system. Please go back and use manual partitioning to set up %1.</source>
         <translation>Šioje sistemoje niekur nepavyko rasti EFI skaidinio. Prašome grįžti ir naudoti rankinį skaidymą, kad nustatytumėte %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="911"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="957"/>
         <source>The EFI system partition at %1 will be used for starting %2.</source>
         <translation>%2 paleidimui bus naudojamas EFI sistemos skaidinys, esantis ties %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="920"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="966"/>
         <source>EFI system partition:</source>
         <translation>EFI sistemos skaidinys:</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1005"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1051"/>
         <source>This storage device does not seem to have an operating system on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>Atrodo, kad šiame įrenginyje nėra operacinės sistemos. Ką norėtumėte daryti?&lt;br/&gt;Prieš atliekant bet kokius pakeitimus atminties įrenginyje, jūs galėsite apžvelgti ir patvirtinti savo pasirinkimus.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1010"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1050"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1074"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1112"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1056"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1096"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1120"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1158"/>
         <source>&lt;strong&gt;Erase disk&lt;/strong&gt;&lt;br/&gt;This will &lt;font color=&quot;red&quot;&gt;delete&lt;/font&gt; all data currently present on the selected storage device.</source>
         <translation>&lt;strong&gt;Ištrinti diską&lt;/strong&gt;&lt;br/&gt;Tai &lt;font color=&quot;red&quot;&gt;ištrins&lt;/font&gt; visus, pasirinktame atminties įrenginyje, esančius duomenis.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1039"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1085"/>
         <source>This storage device has %1 on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>Šiame atminties įrenginyje jau yra %1. Ką norėtumėte daryti?&lt;br/&gt;Prieš atliekant bet kokius pakeitimus atminties įrenginyje, jūs galėsite apžvelgti ir patvirtinti savo pasirinkimus.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1014"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1045"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1069"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1107"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1060"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1091"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1115"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1153"/>
         <source>&lt;strong&gt;Install alongside&lt;/strong&gt;&lt;br/&gt;The installer will shrink a partition to make room for %1.</source>
         <translation>&lt;strong&gt;Įdiegti šalia&lt;/strong&gt;&lt;br/&gt;Diegimo programa sumažins skaidinį, kad atlaisvintų vietą sistemai %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1019"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1055"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1078"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1116"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1065"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1101"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1124"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1162"/>
         <source>&lt;strong&gt;Replace a partition&lt;/strong&gt;&lt;br/&gt;Replaces a partition with %1.</source>
         <translation>&lt;strong&gt;Pakeisti skaidinį&lt;/strong&gt;&lt;br/&gt;Pakeičia skaidinį ir įrašo %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1064"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1110"/>
         <source>This storage device already has an operating system on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>Šiame atminties įrenginyje jau yra operacinė sistema. Ką norėtumėte daryti?&lt;br/&gt;Prieš atliekant bet kokius pakeitimus atminties įrenginyje, jūs galėsite apžvelgti ir patvirtinti savo pasirinkimus.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1102"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1148"/>
         <source>This storage device has multiple operating systems on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>Šiame atminties įrenginyje jau yra kelios operacinės sistemos. Ką norėtumėte daryti?&lt;br/&gt;Prieš atliekant bet kokius pakeitimus atminties įrenginyje, jūs galėsite apžvelgti ir patvirtinti savo pasirinkimus.</translation>
     </message>
@@ -491,17 +491,17 @@ Diegimo programa užbaigs darbą ir visi pakeitimai bus prarasti.</translation>
 <context>
     <name>ClearMountsJob</name>
     <message>
-        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="44"/>
+        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="45"/>
         <source>Clear mounts for partitioning operations on %1</source>
         <translation>Išvalyti prijungimus, siekiant atlikti skaidymo operacijas skaidiniuose %1</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="52"/>
+        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="53"/>
         <source>Clearing mounts for partitioning operations on %1.</source>
         <translation>Išvalomi prijungimai, siekiant atlikti skaidymo operacijas skaidiniuose %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="171"/>
+        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="188"/>
         <source>Cleared all mounts for %1</source>
         <translation>Visi %1 prijungimai išvalyti</translation>
     </message>
@@ -887,39 +887,62 @@ Diegimo programa užbaigs darbą ir visi pakeitimai bus prarasti.</translation>
     </message>
 </context>
 <context>
+    <name>EncryptWidget</name>
+    <message>
+        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Forma</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="20"/>
+        <source>En&amp;crypt system</source>
+        <translation>Užš&amp;ifruoti sistemą</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="30"/>
+        <source>Passphrase</source>
+        <translation>Slaptafrazė</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="40"/>
+        <source>Confirm passphrase</source>
+        <translation>Patvirtinkite slaptafrazę</translation>
+    </message>
+</context>
+<context>
     <name>FillGlobalStorageJob</name>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="88"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="120"/>
         <source>Set partition information</source>
         <translation>Nustatyti skaidinio informaciją</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="111"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="143"/>
         <source>Install %1 on &lt;strong&gt;new&lt;/strong&gt; %2 system partition.</source>
         <translation>Įdiegti %1 &lt;strong&gt;naujame&lt;/strong&gt; %2 sistemos skaidinyje.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="116"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="148"/>
         <source>Set up &lt;strong&gt;new&lt;/strong&gt; %2 partition with mount point &lt;strong&gt;%1&lt;/strong&gt;.</source>
         <translation>Nustatyti &lt;strong&gt;naują&lt;/strong&gt; %2 skaidinį su prijungimo tašku &lt;strong&gt;%1&lt;/strong&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="124"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="156"/>
         <source>Install %2 on %3 system partition &lt;strong&gt;%1&lt;/strong&gt;.</source>
         <translation>Diegti %2 sistemą, %3 sistemos skaidinyje &lt;strong&gt;%1&lt;/strong&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="130"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="162"/>
         <source>Set up %3 partition &lt;strong&gt;%1&lt;/strong&gt; with mount point &lt;strong&gt;%2&lt;/strong&gt;.</source>
         <translation>Nustatyti %3 skaidinį &lt;strong&gt;%1&lt;/strong&gt; su prijungimo tašku &lt;strong&gt;%2&lt;/strong&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="142"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="174"/>
         <source>Install boot loader on &lt;strong&gt;%1&lt;/strong&gt;.</source>
         <translation>Diegti paleidyklę skaidinyje &lt;strong&gt;%1&lt;/strong&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="152"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="184"/>
         <source>Setting up mount points.</source>
         <translation>Nustatomi prijungimo taškai.</translation>
     </message>
@@ -1026,12 +1049,12 @@ Diegimo programa užbaigs darbą ir visi pakeitimai bus prarasti.</translation>
 <context>
     <name>KeyboardPage</name>
     <message>
-        <location filename="../src/modules/keyboard/KeyboardPage.cpp" line="201"/>
+        <location filename="../src/modules/keyboard/KeyboardPage.cpp" line="193"/>
         <source>Set keyboard model to %1.&lt;br/&gt;</source>
         <translation>Nustatyti klaviatūros modelį kaip %1.&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/modules/keyboard/KeyboardPage.cpp" line="203"/>
+        <location filename="../src/modules/keyboard/KeyboardPage.cpp" line="195"/>
         <source>Set keyboard layout to %1/%2.</source>
         <translation>Nustatyti klaviatūros išdėstymą kaip %1/%2.</translation>
     </message>
@@ -1159,7 +1182,7 @@ Diegimo programa užbaigs darbą ir visi pakeitimai bus prarasti.</translation>
         <translation>K&amp;eisti...</translation>
     </message>
     <message>
-        <location filename="../src/modules/locale/LocalePage.cpp" line="271"/>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="290"/>
         <source>Set timezone to %1/%2.&lt;br/&gt;</source>
         <translation>Nustatyti laiko juostą kaip %1/%2.&lt;br/&gt;</translation>
     </message>
@@ -1431,7 +1454,7 @@ Diegimo programa užbaigs darbą ir visi pakeitimai bus prarasti.</translation>
         <translation>Įdiegti pa&amp;leidyklę skaidinyje:</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionPage.cpp" line="147"/>
+        <location filename="../src/modules/partition/gui/PartitionPage.cpp" line="153"/>
         <source>Are you sure you want to create a new partition table on %1?</source>
         <translation>Ar tikrai %1 norite sukurti naują skaidinių lentelę?</translation>
     </message>
@@ -1439,87 +1462,87 @@ Diegimo programa užbaigs darbą ir visi pakeitimai bus prarasti.</translation>
 <context>
     <name>PartitionViewStep</name>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="67"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="69"/>
         <source>Gathering system information...</source>
         <translation>Renkama sistemos informacija...</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="106"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="119"/>
         <source>Partitions</source>
         <translation>Skaidiniai</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="143"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="156"/>
         <source>Install %1 &lt;strong&gt;alongside&lt;/strong&gt; another operating system.</source>
         <translation>Diegti %1 &lt;strong&gt;šalia&lt;/strong&gt; kitos operacinės sistemos.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="148"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="161"/>
         <source>&lt;strong&gt;Erase&lt;/strong&gt; disk and install %1.</source>
         <translation>&lt;strong&gt;Ištrinti&lt;/strong&gt; diską ir diegti %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="153"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="166"/>
         <source>&lt;strong&gt;Replace&lt;/strong&gt; a partition with %1.</source>
         <translation>&lt;strong&gt;Pakeisti&lt;/strong&gt; skaidinį, įrašant %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="158"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="171"/>
         <source>&lt;strong&gt;Manual&lt;/strong&gt; partitioning.</source>
         <translation>&lt;strong&gt;Rankinis&lt;/strong&gt; skaidymas.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="171"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="184"/>
         <source>Install %1 &lt;strong&gt;alongside&lt;/strong&gt; another operating system on disk &lt;strong&gt;%2&lt;/strong&gt; (%3).</source>
         <translation>Įdiegti %1 &lt;strong&gt;šalia&lt;/strong&gt; kitos operacinės sistemos diske &lt;strong&gt;%2&lt;/strong&gt; (%3).</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="178"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="191"/>
         <source>&lt;strong&gt;Erase&lt;/strong&gt; disk &lt;strong&gt;%2&lt;/strong&gt; (%3) and install %1.</source>
         <translation>&lt;strong&gt;Ištrinti&lt;/strong&gt; diską &lt;strong&gt;%2&lt;/strong&gt; (%3) ir diegti %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="185"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="198"/>
         <source>&lt;strong&gt;Replace&lt;/strong&gt; a partition on disk &lt;strong&gt;%2&lt;/strong&gt; (%3) with %1.</source>
         <translation>&lt;strong&gt;Pakeisti&lt;/strong&gt; skaidinį diske &lt;strong&gt;%2&lt;/strong&gt; (%3), įrašant %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="192"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="205"/>
         <source>&lt;strong&gt;Manual&lt;/strong&gt; partitioning on disk &lt;strong&gt;%1&lt;/strong&gt; (%2).</source>
         <translation>&lt;strong&gt;Rankinis&lt;/strong&gt; skaidymas diske &lt;strong&gt;%1&lt;/strong&gt; (%2).</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="200"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="213"/>
         <source>Disk &lt;strong&gt;%1&lt;/strong&gt; (%2)</source>
         <translation>Diskas &lt;strong&gt;%1&lt;/strong&gt; (%2)</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="228"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="241"/>
         <source>Current:</source>
         <translation>Dabartinis:</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="244"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="257"/>
         <source>After:</source>
         <translation>Po:</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="386"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="399"/>
         <source>No EFI system partition configured</source>
         <translation>Nėra sukonfigūruoto EFI sistemos skaidinio</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="387"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="400"/>
         <source>An EFI system partition is necessary to start %1.&lt;br/&gt;&lt;br/&gt;To configure an EFI system partition, go back and select or create a FAT32 filesystem with the &lt;strong&gt;esp&lt;/strong&gt; flag enabled and mount point &lt;strong&gt;%2&lt;/strong&gt;.&lt;br/&gt;&lt;br/&gt;You can continue without setting up an EFI system partition but your system may fail to start.</source>
         <translation>EFI sistemos skaidinys yra būtinas, norint paleisti %1.&lt;br/&gt;&lt;br/&gt;Tam, kad sukonfigūruotumėte EFI sistemos skaidinį, grįžkite atgal ir pasirinkite arba sukurkite FAT32 failų sistemą su įjungta &lt;strong&gt;esp&lt;/strong&gt; vėliavėle ir &lt;strong&gt;%2&lt;/strong&gt; prijungimo tašku.&lt;br/&gt;&lt;br/&gt;Jūs galite tęsti ir nenustatę EFI sistemos skaidinio, tačiau tokiu atveju, gali nepavykti paleisti jūsų sistemos.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="401"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="414"/>
         <source>EFI system partition flag not set</source>
         <translation>Nenustatyta EFI sistemos skaidinio vėliavėlė</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="402"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="415"/>
         <source>An EFI system partition is necessary to start %1.&lt;br/&gt;&lt;br/&gt;A partition was configured with mount point &lt;strong&gt;%2&lt;/strong&gt; but its &lt;strong&gt;esp&lt;/strong&gt; flag is not set.&lt;br/&gt;To set the flag, go back and edit the partition.&lt;br/&gt;&lt;br/&gt;You can continue without setting the flag but your system may fail to start.</source>
         <translation>EFI sistemos skaidinys yra būtinas, norint paleisti %1.&lt;br/&gt;&lt;br/&gt;Skaidinys buvo sukonfigūruotas su prijungimo tašku &lt;strong&gt;%2&lt;/strong&gt;, tačiau jo &lt;strong&gt;esp&lt;/strong&gt; vėliavėlė yra nenustatyta.&lt;br/&gt;Tam, kad nustatytumėte vėliavėlę, grįžkite atgal ir redaguokite skaidinį.&lt;br/&gt;&lt;br/&gt;Jūs galite tęsti ir nenustatę vėliavėlės, tačiau tokiu atveju, gali nepavykti paleisti jūsų sistemos.</translation>
     </message>
@@ -1538,19 +1561,24 @@ Diegimo programa užbaigs darbą ir visi pakeitimai bus prarasti.</translation>
         <translation>Numatytasis</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="160"/>
+        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="195"/>
         <source>unknown</source>
         <translation>nežinoma</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="162"/>
+        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="197"/>
         <source>extended</source>
         <translation>išplėsta</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="164"/>
+        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="199"/>
         <source>unformatted</source>
         <translation>nesutvarkyta</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="201"/>
+        <source>swap</source>
+        <translation>sukeitimų (swap)</translation>
     </message>
     <message>
         <location filename="../src/modules/partition/gui/PartitionLabelsView.cpp" line="49"/>

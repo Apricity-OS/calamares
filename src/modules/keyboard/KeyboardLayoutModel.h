@@ -1,6 +1,6 @@
 /* === This file is part of Calamares - <http://github.com/calamares> ===
  *
- *   Copyright 2014-2016, Teo Mrnjavac <teo@kde.org>
+ *   Copyright 2016, Teo Mrnjavac <teo@kde.org>
  *
  *   Calamares is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -16,25 +16,36 @@
  *   along with Calamares. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PARTITIONACTIONS_H
-#define PARTITIONACTIONS_H
+#ifndef KEYBOARDLAYOUTMODEL_H
+#define KEYBOARDLAYOUTMODEL_H
 
-#include <QString>
+#include "keyboardwidget/keyboardglobal.h"
 
-class PartitionCoreModule;
-class Device;
-class Partition;
+#include <QAbstractListModel>
+#include <QMap>
+#include <QMetaType>
 
-namespace PartitionActions
+class KeyboardLayoutModel : public QAbstractListModel
 {
-void doAutopartition( PartitionCoreModule* core,
-                      Device* dev,
-                      const QString& luksPassphrase = QString() );
+    Q_OBJECT
 
-void doReplacePartition( PartitionCoreModule* core,
-                         Device* dev,
-                         Partition* partition,
-                         const QString& luksPassphrase = QString() );
-}
+public:
+    enum Roles : int
+    {
+        KeyboardVariantsRole = Qt::UserRole,
+        KeyboardLayoutKeyRole
+    };
 
-#endif // PARTITIONACTIONS_H
+    KeyboardLayoutModel( QObject* parent = nullptr );
+
+    int rowCount( const QModelIndex& parent = QModelIndex() ) const override;
+
+    QVariant data( const QModelIndex& index, int role ) const override;
+
+private:
+    void init();
+
+    QList< QPair< QString, KeyboardGlobal::KeyboardInfo > > m_layouts;
+};
+
+#endif // KEYBOARDLAYOUTMODEL_H

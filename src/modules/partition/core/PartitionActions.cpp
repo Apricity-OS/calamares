@@ -1,6 +1,6 @@
 /* === This file is part of Calamares - <http://github.com/calamares> ===
  *
- *   Copyright 2014-2015, Teo Mrnjavac <teo@kde.org>
+ *   Copyright 2014-2016, Teo Mrnjavac <teo@kde.org>
  *
  *   Calamares is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -98,11 +98,17 @@ swapSuggestion( const qint64 availableSpaceB )
 
 
 void
-doAutopartition( PartitionCoreModule* core, Device* dev )
+doAutopartition( PartitionCoreModule* core, Device* dev, const QString& luksPassphrase )
 {
     bool isEfi = false;
     if ( QDir( "/sys/firmware/efi/efivars" ).exists() )
         isEfi = true;
+
+    QString defaultFsType = Calamares::JobQueue::instance()->
+                                globalStorage()->
+                                value( "defaultFileSystemType" ).toString();
+    if ( FileSystem::typeForName( defaultFsType ) == FileSystem::Unknown )
+        defaultFsType = "ext4";
 
 #define MiB * static_cast< qint64 >( 1024 ) * 1024
 #define GiB * static_cast< qint64 >( 1024 ) * 1024 * 1024
@@ -167,28 +173,60 @@ doAutopartition( PartitionCoreModule* core, Device* dev )
         lastSectorForRoot -= suggestedSwapSizeB / dev->logicalSectorSize() + 1;
     }
 
-    Partition* rootPartition = KPMHelpers::createNewPartition(
-        dev->partitionTable(),
-        *dev,
-        PartitionRole( PartitionRole::Primary ),
-        FileSystem::Ext4,
-        firstFreeSector,
-        lastSectorForRoot
-    );
+    Partition* rootPartition = nullptr;
+    if ( luksPassphrase.isEmpty() )
+    {
+        rootPartition = KPMHelpers::createNewPartition(
+            dev->partitionTable(),
+            *dev,
+            PartitionRole( PartitionRole::Primary ),
+            FileSystem::typeForName( defaultFsType ),
+            firstFreeSector,
+            lastSectorForRoot
+        );
+    }
+    else
+    {
+        rootPartition = KPMHelpers::createNewEncryptedPartition(
+            dev->partitionTable(),
+            *dev,
+            PartitionRole( PartitionRole::Primary ),
+            FileSystem::typeForName( defaultFsType ),
+            firstFreeSector,
+            lastSectorForRoot,
+            luksPassphrase
+       );
+    }
     PartitionInfo::setFormat( rootPartition, true );
     PartitionInfo::setMountPoint( rootPartition, "/" );
     core->createPartition( dev, rootPartition );
 
     if ( shouldCreateSwap )
     {
-        Partition* swapPartition = KPMHelpers::createNewPartition(
-            dev->partitionTable(),
-            *dev,
-            PartitionRole( PartitionRole::Primary ),
-            FileSystem::LinuxSwap,
-            lastSectorForRoot + 1,
-            dev->totalSectors() - 1
-        );
+        Partition* swapPartition = nullptr;
+        if ( luksPassphrase.isEmpty() )
+        {
+            swapPartition = KPMHelpers::createNewPartition(
+                dev->partitionTable(),
+                *dev,
+                PartitionRole( PartitionRole::Primary ),
+                FileSystem::LinuxSwap,
+                lastSectorForRoot + 1,
+                dev->totalSectors() - 1
+            );
+        }
+        else
+        {
+            swapPartition = KPMHelpers::createNewEncryptedPartition(
+                dev->partitionTable(),
+                *dev,
+                PartitionRole( PartitionRole::Primary ),
+                FileSystem::LinuxSwap,
+                lastSectorForRoot + 1,
+                dev->totalSectors() - 1,
+                luksPassphrase
+            );
+        }
         PartitionInfo::setFormat( swapPartition, true );
         core->createPartition( dev, swapPartition );
     }
@@ -198,9 +236,18 @@ doAutopartition( PartitionCoreModule* core, Device* dev )
 
 
 void
-doReplacePartition( PartitionCoreModule* core, Device* dev, Partition* partition )
+doReplacePartition( PartitionCoreModule* core,
+                    Device* dev,
+                    Partition* partition,
+                    const QString& luksPassphrase )
 {
     cDebug() << "doReplacePartition for device" << partition->partitionPath();
+
+    QString defaultFsType = Calamares::JobQueue::instance()->
+                                globalStorage()->
+                                value( "defaultFileSystemType" ).toString();
+    if ( FileSystem::typeForName( defaultFsType ) == FileSystem::Unknown )
+        defaultFsType = "ext4";
 
     PartitionRole newRoles( partition->roles() );
     if ( partition->roles().has( PartitionRole::Extended ) )
@@ -218,13 +265,30 @@ doReplacePartition( PartitionCoreModule* core, Device* dev, Partition* partition
         }
     }
 
-    Partition* newPartition = KPMHelpers::createNewPartition(
-                                  partition->parent(),
-                                  *dev,
-                                  newRoles,
-                                  FileSystem::Ext4,
-                                  partition->firstSector(),
-                                  partition->lastSector() );
+    Partition* newPartition = nullptr;
+    if ( luksPassphrase.isEmpty() )
+    {
+        newPartition = KPMHelpers::createNewPartition(
+            partition->parent(),
+            *dev,
+            newRoles,
+            FileSystem::typeForName( defaultFsType ),
+            partition->firstSector(),
+            partition->lastSector()
+        );
+    }
+    else
+    {
+        newPartition = KPMHelpers::createNewEncryptedPartition(
+            partition->parent(),
+            *dev,
+            newRoles,
+            FileSystem::typeForName( defaultFsType ),
+            partition->firstSector(),
+            partition->lastSector(),
+            luksPassphrase
+        );
+    }
     PartitionInfo::setMountPoint( newPartition, "/" );
     PartitionInfo::setFormat( newPartition, true );
 

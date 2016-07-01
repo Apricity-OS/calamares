@@ -391,17 +391,17 @@ Installationsprogrammet vil stoppe og alle ændringer vil gå tabt.</translation
         <translation>Efter:</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="223"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="227"/>
         <source>&lt;strong&gt;Manual partitioning&lt;/strong&gt;&lt;br/&gt;You can create or resize partitions yourself.</source>
         <translation>&lt;strong&gt;Manuel partitionering&lt;/strong&gt;&lt;br/&gt;Do kan lave og ændre størrelse på partitioner selv.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="808"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="853"/>
         <source>Boot loader location:</source>
         <translation>Boot loader lokation:</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="755"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="798"/>
         <source>%1 will be shrunk to %2MB and a new %3MB partition will be created for %4.</source>
         <translation>%1 vil blive krympet til %2MB og en ny %3MB partition vil blive lavet til %4.</translation>
     </message>
@@ -412,78 +412,78 @@ Installationsprogrammet vil stoppe og alle ændringer vil gå tabt.</translation
     </message>
     <message>
         <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="116"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="740"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="779"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="855"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="783"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="824"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="900"/>
         <source>Current:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="741"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="784"/>
         <source>&lt;strong&gt;Select a partition to shrink, then drag the bottom bar to resize&lt;/strong&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="846"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="891"/>
         <source>&lt;strong&gt;Select a partition to install on&lt;/strong&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="901"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="947"/>
         <source>An EFI system partition cannot be found anywhere on this system. Please go back and use manual partitioning to set up %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="911"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="957"/>
         <source>The EFI system partition at %1 will be used for starting %2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="920"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="966"/>
         <source>EFI system partition:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1005"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1051"/>
         <source>This storage device does not seem to have an operating system on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>Denne lagerenhed ser ikke ud til at indeholde et styresystem. Hvad vil du gerne gøre?&lt;br/&gt;Du vil få mulighed for at se og bekræfte dine valg før der sker ændringer til lagerenheden.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1010"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1050"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1074"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1112"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1056"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1096"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1120"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1158"/>
         <source>&lt;strong&gt;Erase disk&lt;/strong&gt;&lt;br/&gt;This will &lt;font color=&quot;red&quot;&gt;delete&lt;/font&gt; all data currently present on the selected storage device.</source>
         <translation>&lt;strong&gt;Slet disk&lt;/strong&gt;&lt;br/&gt;Dette vil &lt;font color=&quot;red&quot;&gt;slette&lt;/font&gt; alt data der er på den valgte lagerenhed lige nu.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1039"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1085"/>
         <source>This storage device has %1 on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>Denne lagerenhed har %1 på den. Hvad vil du gerne gøre?&lt;/br&gt;Du vil få mulighed for at se og bekræfte dine valg før det sker ændringer til lagerenheden.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1014"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1045"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1069"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1107"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1060"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1091"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1115"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1153"/>
         <source>&lt;strong&gt;Install alongside&lt;/strong&gt;&lt;br/&gt;The installer will shrink a partition to make room for %1.</source>
         <translation>&lt;strong&gt;Installér ved siden af&lt;/strong&gt;&lt;br/&gt;Installationsprogrammet vil krympe en partition for at gøre plads til %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1019"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1055"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1078"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1116"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1065"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1101"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1124"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1162"/>
         <source>&lt;strong&gt;Replace a partition&lt;/strong&gt;&lt;br/&gt;Replaces a partition with %1.</source>
         <translation>&lt;strong&gt;Erstat en partition&lt;/strong&gt;&lt;br/&gt;Erstatter en partition med %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1064"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1110"/>
         <source>This storage device already has an operating system on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>Denne lagerenhed indeholder allerede et styresystem. Hvad vil du gerne gøre?&lt;br/&gt;Du vil få mulighed for at se og bekræfte dine valg før der sker ændringer til lagerenheden.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1102"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1148"/>
         <source>This storage device has multiple operating systems on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>Denne lagerenhed indeholder flere styresystemer. Hvad vil du gerne gøre?&lt;/br&gt;Du vil få mulighed for at se og bekræfte dine valg før der sker ændringer til lagerenheden.</translation>
     </message>
@@ -491,17 +491,17 @@ Installationsprogrammet vil stoppe og alle ændringer vil gå tabt.</translation
 <context>
     <name>ClearMountsJob</name>
     <message>
-        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="44"/>
+        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="45"/>
         <source>Clear mounts for partitioning operations on %1</source>
         <translation>Frigør monteringer til partitionering på %1</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="52"/>
+        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="53"/>
         <source>Clearing mounts for partitioning operations on %1.</source>
         <translation>Renser monteringspunkter for partitionerings handling på %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="171"/>
+        <location filename="../src/modules/partition/jobs/ClearMountsJob.cpp" line="188"/>
         <source>Cleared all mounts for %1</source>
         <translation>Frigjorde alle monteringer til %1</translation>
     </message>
@@ -887,39 +887,62 @@ Installationsprogrammet vil stoppe og alle ændringer vil gå tabt.</translation
     </message>
 </context>
 <context>
+    <name>EncryptWidget</name>
+    <message>
+        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="20"/>
+        <source>En&amp;crypt system</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="30"/>
+        <source>Passphrase</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="40"/>
+        <source>Confirm passphrase</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FillGlobalStorageJob</name>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="88"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="120"/>
         <source>Set partition information</source>
         <translation>Indstil partitionsinformation</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="111"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="143"/>
         <source>Install %1 on &lt;strong&gt;new&lt;/strong&gt; %2 system partition.</source>
         <translation>Installér %1 på den &lt;strong&gt;nye&lt;/strong&gt; %2 system partition.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="116"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="148"/>
         <source>Set up &lt;strong&gt;new&lt;/strong&gt; %2 partition with mount point &lt;strong&gt;%1&lt;/strong&gt;.</source>
         <translation>Opsæt den &lt;strong&gt;nye&lt;/strong&gt; %2 partition med monteringspunkt &lt;strong&gt;%1&lt;/strong&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="124"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="156"/>
         <source>Install %2 on %3 system partition &lt;strong&gt;%1&lt;/strong&gt;.</source>
         <translation>Installér %2 på %3 system partition &lt;strong&gt;%1&lt;/strong&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="130"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="162"/>
         <source>Set up %3 partition &lt;strong&gt;%1&lt;/strong&gt; with mount point &lt;strong&gt;%2&lt;/strong&gt;.</source>
         <translation>Opsæt %3 partition &lt;strong&gt;%1&lt;/strong&gt; med monteringspunkt &lt;strong&gt;%2&lt;/strong&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="142"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="174"/>
         <source>Install boot loader on &lt;strong&gt;%1&lt;/strong&gt;.</source>
         <translation>Installér boot loader på &lt;strong&gt;%1&lt;/strong&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="152"/>
+        <location filename="../src/modules/partition/jobs/FillGlobalStorageJob.cpp" line="184"/>
         <source>Setting up mount points.</source>
         <translation>Opsætter monteringspunkter.</translation>
     </message>
@@ -1026,12 +1049,12 @@ Installationsprogrammet vil stoppe og alle ændringer vil gå tabt.</translation
 <context>
     <name>KeyboardPage</name>
     <message>
-        <location filename="../src/modules/keyboard/KeyboardPage.cpp" line="201"/>
+        <location filename="../src/modules/keyboard/KeyboardPage.cpp" line="193"/>
         <source>Set keyboard model to %1.&lt;br/&gt;</source>
         <translation>Indstil tastatur model til %1.&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/modules/keyboard/KeyboardPage.cpp" line="203"/>
+        <location filename="../src/modules/keyboard/KeyboardPage.cpp" line="195"/>
         <source>Set keyboard layout to %1/%2.</source>
         <translation>Indstil tastatur layout til %1/%2.</translation>
     </message>
@@ -1159,7 +1182,7 @@ Installationsprogrammet vil stoppe og alle ændringer vil gå tabt.</translation
         <translation>&amp;Ændre...</translation>
     </message>
     <message>
-        <location filename="../src/modules/locale/LocalePage.cpp" line="271"/>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="290"/>
         <source>Set timezone to %1/%2.&lt;br/&gt;</source>
         <translation>Indstil tidszone til %1/%2.&lt;br/&gt;</translation>
     </message>
@@ -1431,7 +1454,7 @@ Installationsprogrammet vil stoppe og alle ændringer vil gå tabt.</translation
         <translation>Installér boot &amp;loader på:</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionPage.cpp" line="147"/>
+        <location filename="../src/modules/partition/gui/PartitionPage.cpp" line="153"/>
         <source>Are you sure you want to create a new partition table on %1?</source>
         <translation>Er du sikker på at du vil oprette en ny partitionstabel på %1?</translation>
     </message>
@@ -1439,87 +1462,87 @@ Installationsprogrammet vil stoppe og alle ændringer vil gå tabt.</translation
 <context>
     <name>PartitionViewStep</name>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="67"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="69"/>
         <source>Gathering system information...</source>
         <translation>Samler system information...</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="106"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="119"/>
         <source>Partitions</source>
         <translation>Partitioner</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="143"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="156"/>
         <source>Install %1 &lt;strong&gt;alongside&lt;/strong&gt; another operating system.</source>
         <translation>Installér %1 &lt;strong&gt;ved siden af&lt;/strong&gt; et andet styresystem.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="148"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="161"/>
         <source>&lt;strong&gt;Erase&lt;/strong&gt; disk and install %1.</source>
         <translation>&lt;strong&gt;Slet&lt;/strong&gt; disk og installér %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="153"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="166"/>
         <source>&lt;strong&gt;Replace&lt;/strong&gt; a partition with %1.</source>
         <translation>&lt;strong&gt;Erstat&lt;/strong&gt; en partition med %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="158"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="171"/>
         <source>&lt;strong&gt;Manual&lt;/strong&gt; partitioning.</source>
         <translation>&lt;strong&gt;Manuel&lt;/strong&gt; partitionering.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="171"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="184"/>
         <source>Install %1 &lt;strong&gt;alongside&lt;/strong&gt; another operating system on disk &lt;strong&gt;%2&lt;/strong&gt; (%3).</source>
         <translation>Installér %1 &lt;strong&gt;ved siden af&lt;/strong&gt; et andet styresystem på disk &lt;strong&gt;%2&lt;/strong&gt; (%3).</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="178"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="191"/>
         <source>&lt;strong&gt;Erase&lt;/strong&gt; disk &lt;strong&gt;%2&lt;/strong&gt; (%3) and install %1.</source>
         <translation>&lt;strong&gt;Slet&lt;/strong&gt; disk &lt;strong&gt;%2&lt;/strong&gt; (%3) og installér %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="185"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="198"/>
         <source>&lt;strong&gt;Replace&lt;/strong&gt; a partition on disk &lt;strong&gt;%2&lt;/strong&gt; (%3) with %1.</source>
         <translation>&lt;strong&gt;Erstat&lt;/strong&gt; en partition på disk &lt;strong&gt;%2&lt;/strong&gt; (%3) med %1.</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="192"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="205"/>
         <source>&lt;strong&gt;Manual&lt;/strong&gt; partitioning on disk &lt;strong&gt;%1&lt;/strong&gt; (%2).</source>
         <translation>&lt;strong&gt;Manuel&lt;/strong&gt; partitionering på disk &lt;strong&gt;%1&lt;/strong&gt; (%2).</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="200"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="213"/>
         <source>Disk &lt;strong&gt;%1&lt;/strong&gt; (%2)</source>
         <translation>Disk &lt;strong&gt;%1&lt;/strong&gt; (%2)</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="228"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="241"/>
         <source>Current:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="244"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="257"/>
         <source>After:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="386"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="399"/>
         <source>No EFI system partition configured</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="387"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="400"/>
         <source>An EFI system partition is necessary to start %1.&lt;br/&gt;&lt;br/&gt;To configure an EFI system partition, go back and select or create a FAT32 filesystem with the &lt;strong&gt;esp&lt;/strong&gt; flag enabled and mount point &lt;strong&gt;%2&lt;/strong&gt;.&lt;br/&gt;&lt;br/&gt;You can continue without setting up an EFI system partition but your system may fail to start.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="401"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="414"/>
         <source>EFI system partition flag not set</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="402"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="415"/>
         <source>An EFI system partition is necessary to start %1.&lt;br/&gt;&lt;br/&gt;A partition was configured with mount point &lt;strong&gt;%2&lt;/strong&gt; but its &lt;strong&gt;esp&lt;/strong&gt; flag is not set.&lt;br/&gt;To set the flag, go back and edit the partition.&lt;br/&gt;&lt;br/&gt;You can continue without setting the flag but your system may fail to start.</source>
         <translation type="unfinished"/>
     </message>
@@ -1538,19 +1561,24 @@ Installationsprogrammet vil stoppe og alle ændringer vil gå tabt.</translation
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="160"/>
+        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="195"/>
         <source>unknown</source>
         <translation>ukendt</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="162"/>
+        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="197"/>
         <source>extended</source>
         <translation>udvidet</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="164"/>
+        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="199"/>
         <source>unformatted</source>
         <translation>uformatteret</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/core/KPMHelpers.cpp" line="201"/>
+        <source>swap</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/modules/partition/gui/PartitionLabelsView.cpp" line="49"/>

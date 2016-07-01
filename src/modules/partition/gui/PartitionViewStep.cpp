@@ -42,6 +42,7 @@
 
 #include <kpmcore/core/device.h>
 #include <kpmcore/core/partition.h>
+#include <kpmcore/fs/filesystem.h>
 
 // Qt
 #include <QApplication>
@@ -52,13 +53,15 @@
 #include <QProcess>
 #include <QStackedWidget>
 #include <QTimer>
+#include <QtConcurrent/QtConcurrent>
+#include <QFutureWatcher>
 
 PartitionViewStep::PartitionViewStep( QObject* parent )
     : Calamares::ViewStep( parent )
     , m_widget( new QStackedWidget() )
-    , m_core( new PartitionCoreModule( this ) )
+    , m_core( nullptr )
     , m_choicePage( nullptr )
-    , m_manualPartitionPage( new PartitionPage( m_core ) )
+    , m_manualPartitionPage( nullptr )
 {
     m_widget->setContentsMargins( 0, 0, 0, 0 );
 
@@ -71,9 +74,20 @@ PartitionViewStep::PartitionViewStep( QObject* parent )
 
 
 void
+PartitionViewStep::initPartitionCoreModule()
+{
+    Q_ASSERT( !m_core );
+    m_core = new PartitionCoreModule( this );
+}
+
+
+void
 PartitionViewStep::continueLoading()
 {
     Q_ASSERT( !m_choicePage );
+    Q_ASSERT( !m_manualPartitionPage );
+
+    m_manualPartitionPage = new PartitionPage( m_core );
     m_choicePage = new ChoicePage();
 
     m_choicePage->init( m_core );
@@ -354,8 +368,10 @@ void
 PartitionViewStep::onActivate()
 {
     // if we're coming back to PVS from the next VS
-    if ( m_widget->currentWidget() == m_choicePage )
+    if ( m_widget->currentWidget() == m_choicePage &&
+         m_choicePage->currentChoice() == ChoicePage::Alongside )
     {
+        m_choicePage->applyActionChoice( ChoicePage::Alongside );
 //        m_choicePage->reset();
         //FIXME: ReplaceWidget should be reset maybe?
     }
@@ -463,7 +479,49 @@ PartitionViewStep::setConfigurationMap( const QVariantMap& configurationMap )
         gs->insert( "drawNestedPartitions", false );
     }
 
-    QTimer::singleShot( 0, this, &PartitionViewStep::continueLoading );
+    if ( configurationMap.contains( "alwaysShowPartitionLabels" ) &&
+         configurationMap.value( "alwaysShowPartitionLabels" ).type() == QVariant::Bool )
+    {
+        gs->insert( "alwaysShowPartitionLabels",
+                    configurationMap.value( "alwaysShowPartitionLabels", true ).toBool() );
+    }
+    else
+    {
+        gs->insert( "alwaysShowPartitionLabels", true );
+    }
+
+    if ( configurationMap.contains( "defaultFileSystemType" ) &&
+         configurationMap.value( "defaultFileSystemType" ).type() == QVariant::String &&
+         !configurationMap.value( "defaultFileSystemType" ).toString().isEmpty() )
+    {
+        QString typeString = configurationMap.value( "defaultFileSystemType" ).toString();
+        gs->insert( "defaultFileSystemType", typeString );
+        if ( FileSystem::typeForName( typeString ) == FileSystem::Unknown )
+        {
+            cDebug() << "WARNING: bad default filesystem configuration for partition module. Reverting to ext4 as default.";
+            gs->insert( "defaultFileSystemType", "ext4" );
+        }
+    }
+    else
+    {
+        gs->insert( "defaultFileSystemType", QStringLiteral( "ext4" ) );
+    }
+
+
+    // Now that we have the config, we load the PartitionCoreModule in the background
+    // because it could take a while. Then when it's done, we can set up the widgets
+    // and remove the spinner.
+    QFutureWatcher< void >* watcher = new QFutureWatcher< void >();
+    connect( watcher, &QFutureWatcher< void >::finished,
+             this, [ this, watcher ]
+    {
+        continueLoading();
+        watcher->deleteLater();
+    } );
+
+    QFuture< void > future =
+            QtConcurrent::run( this, &PartitionViewStep::initPartitionCoreModule );
+    watcher->setFuture( future );
 }
 
 
