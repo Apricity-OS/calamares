@@ -289,7 +289,6 @@ def run():
         return None
 
     target_env_call(["os-prober"])
-
     fw_type = libcalamares.globalstorage.value("firmwareType")
     prepare_bootloader(fw_type)
 
