@@ -1,6 +1,7 @@
 /* === This file is part of Calamares - <http://github.com/calamares> ===
  *
  *   Copyright 2014, Aurélien Gâteau <agateau@kde.org>
+ *   Copyright 2016, Teo Mrnjavac <teo@kde.org>
  *
  *   Calamares is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -34,11 +35,13 @@
 #include <kpmcore/core/partition.h>
 #include <kpmcore/fs/filesystem.h>
 #include <kpmcore/fs/filesystemfactory.h>
+#include <kpmcore/fs/luks.h>
 
 // Qt
 #include <QComboBox>
 #include <QDir>
 #include <QSet>
+#include <QListWidgetItem>
 
 static QSet< FileSystem::Type > s_unmountableFS(
 {
@@ -57,6 +60,8 @@ CreatePartitionDialog::CreatePartitionDialog( Device* device, PartitionNode* par
     , m_parent( parentPartition )
 {
     m_ui->setupUi( this );
+    m_ui->encryptWidget->setText( tr( "En&crypt" ) );
+    m_ui->encryptWidget->hide();
 
     QStringList mountPoints = { "/", "/boot", "/home", "/opt", "/usr", "/var" };
     if ( QDir( "/sys/firmware/efi/efivars" ).exists() )
@@ -72,21 +77,72 @@ CreatePartitionDialog::CreatePartitionDialog( Device* device, PartitionNode* par
         initGptPartitionTypeUi();
 
     // File system
+    FileSystem::Type defaultFsType = FileSystem::typeForName(
+                                         Calamares::JobQueue::instance()->
+                                         globalStorage()->
+                                         value( "defaultFileSystemType" ).toString() );
+    int defaultFsIndex = -1;
+    int fsCounter = 0;
     QStringList fsNames;
     for ( auto fs : FileSystemFactory::map() )
     {
-        if ( fs->supportCreate() != FileSystem::cmdSupportNone && fs->type() != FileSystem::Extended )
+        if ( fs->supportCreate() != FileSystem::cmdSupportNone &&
+             fs->type() != FileSystem::Extended )
+        {
             fsNames << fs->name();
+            if ( fs->type() == defaultFsType )
+                defaultFsIndex = fsCounter;
+            fsCounter++;
+        }
     }
     m_ui->fsComboBox->addItems( fsNames );
 
     // Connections
     connect( m_ui->fsComboBox, SIGNAL( activated( int ) ), SLOT( updateMountPointUi() ) );
     connect( m_ui->extendedRadioButton, SIGNAL( toggled( bool ) ), SLOT( updateMountPointUi() ) );
+
+    // Select a default
+    m_ui->fsComboBox->setCurrentIndex( defaultFsIndex );
+    updateMountPointUi();
+
+    setupFlagsList();
 }
 
 CreatePartitionDialog::~CreatePartitionDialog()
 {}
+
+
+PartitionTable::Flags
+CreatePartitionDialog::newFlags() const
+{
+    PartitionTable::Flags flags;
+
+    for ( int i = 0; i < m_ui->m_listFlags->count(); i++ )
+        if ( m_ui->m_listFlags->item( i )->checkState() == Qt::Checked )
+            flags |= static_cast< PartitionTable::Flag >(
+                         m_ui->m_listFlags->item( i )->data( Qt::UserRole ).toInt() );
+
+    return flags;
+}
+
+
+void
+CreatePartitionDialog::setupFlagsList()
+{
+    int f = 1;
+    QString s;
+    while ( !( s = PartitionTable::flagName( static_cast< PartitionTable::Flag >( f ) ) ).isEmpty() )
+    {
+        QListWidgetItem* item = new QListWidgetItem( s );
+        m_ui->m_listFlags->addItem( item );
+        item->setFlags( Qt::ItemIsUserCheckable | Qt::ItemIsEnabled );
+        item->setData( Qt::UserRole, f );
+        item->setCheckState( Qt::Unchecked );
+
+        f <<= 1;
+    }
+}
+
 
 void
 CreatePartitionDialog::initMbrPartitionTypeUi()
@@ -141,14 +197,32 @@ CreatePartitionDialog::createPartition()
     FileSystem::Type fsType = m_role.has( PartitionRole::Extended )
                               ? FileSystem::Extended
                               : FileSystem::typeForName( m_ui->fsComboBox->currentText() );
-    Partition* partition = KPMHelpers::createNewPartition(
-                               m_parent,
-                               *m_device,
-                               m_role,
-                               fsType, first, last );
+
+    Partition* partition = nullptr;
+    QString luksPassphrase = m_ui->encryptWidget->passphrase();
+    if ( m_ui->encryptWidget->state() == EncryptWidget::EncryptionConfirmed &&
+         !luksPassphrase.isEmpty() )
+    {
+        partition = KPMHelpers::createNewEncryptedPartition(
+            m_parent,
+            *m_device,
+            m_role,
+            fsType, first, last, luksPassphrase, newFlags()
+        );
+    }
+    else
+    {
+        partition = KPMHelpers::createNewPartition(
+            m_parent,
+            *m_device,
+            m_role,
+            fsType, first, last, newFlags()
+        );
+    }
 
     PartitionInfo::setMountPoint( partition, m_ui->mountPointComboBox->currentText() );
     PartitionInfo::setFormat( partition, true );
+
     return partition;
 }
 
@@ -160,6 +234,17 @@ CreatePartitionDialog::updateMountPointUi()
     {
         FileSystem::Type type = FileSystem::typeForName( m_ui->fsComboBox->currentText() );
         enabled = !s_unmountableFS.contains( type );
+
+        if ( FS::luks::canEncryptType( type ) )
+        {
+            m_ui->encryptWidget->show();
+            m_ui->encryptWidget->reset();
+        }
+        else
+        {
+            m_ui->encryptWidget->reset();
+            m_ui->encryptWidget->hide();
+        }
     }
     m_ui->mountPointLabel->setEnabled( enabled );
     m_ui->mountPointComboBox->setEnabled( enabled );

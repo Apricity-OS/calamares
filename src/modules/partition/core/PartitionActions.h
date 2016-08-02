@@ -1,6 +1,6 @@
 /* === This file is part of Calamares - <http://github.com/calamares> ===
  *
- *   Copyright 2014-2015, Teo Mrnjavac <teo@kde.org>
+ *   Copyright 2014-2016, Teo Mrnjavac <teo@kde.org>
  *
  *   Calamares is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,14 +19,22 @@
 #ifndef PARTITIONACTIONS_H
 #define PARTITIONACTIONS_H
 
+#include <QString>
+
 class PartitionCoreModule;
 class Device;
 class Partition;
 
 namespace PartitionActions
 {
-void doAutopartition( PartitionCoreModule* core, Device* dev );
-void doReplacePartition( PartitionCoreModule* core, Device* dev, Partition* partition );
+void doAutopartition( PartitionCoreModule* core,
+                      Device* dev,
+                      const QString& luksPassphrase = QString() );
+
+void doReplacePartition( PartitionCoreModule* core,
+                         Device* dev,
+                         Partition* partition,
+                         const QString& luksPassphrase = QString() );
 }
 
 #endif // PARTITIONACTIONS_H

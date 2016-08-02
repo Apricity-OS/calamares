@@ -89,12 +89,31 @@ def create_systemd_boot_conf(uuid, conf_path, kernel_line):
     distribution = get_bootloader_entry_name()
     kernel = libcalamares.job.configuration["kernel"]
     img = libcalamares.job.configuration["img"]
+    kernel_params = ["quiet"]
+
     partitions = libcalamares.globalstorage.value("partitions")
-    swap = ""
+    swap_uuid = ""
+
+    cryptdevice_params = []
 
     for partition in partitions:
         if partition["fs"] == "linuxswap":
-            swap = partition["uuid"]
+            swap_uuid = partition["uuid"]
+
+        if partition["mountPoint"] == "/" and "luksMapperName" in partition:
+            cryptdevice_params = [
+                "cryptdevice=UUID={!s}:{!s}".format(partition["luksUuid"],
+                                                    partition["luksMapperName"]),
+                "root=/dev/mapper/{!s}".format(partition["luksMapperName"])
+            ]
+
+    if cryptdevice_params:
+        kernel_params.extend(cryptdevice_params)
+    else:
+        kernel_params.append("root=UUID={!s}".format(uuid))
+
+    if swap_uuid:
+        kernel_params.append("resume=UUID={!s}".format(swap_uuid))
 
     lines = [
         '## This is just an example config file.\n',
@@ -103,12 +122,12 @@ def create_systemd_boot_conf(uuid, conf_path, kernel_line):
         "title   {!s}{!s}\n".format(distribution, kernel_line),
         "linux   {!s}\n".format(kernel),
         "initrd  {!s}\n".format(img),
-        "options root=UUID={!s} quiet resume=UUID={!s} rw\n".format(uuid, swap),
+        "options {!s} rw\n".format(" ".join(kernel_params)),
     ]
 
-    with open(conf_path, 'w') as f:
-        for l in lines:
-            f.write(l)
+    with open(conf_path, 'w') as conf_file:
+        for line in lines:
+            conf_file.write(line)
 
 
 def create_loader(loader_path):
@@ -125,9 +144,9 @@ def create_loader(loader_path):
         "default {!s}\n".format(distribution_translated),
     ]
 
-    with open(loader_path, 'w') as f:
-        for l in lines:
-            f.write(l)
+    with open(loader_path, 'w') as loader_file:
+        for line in lines:
+            loader_file.write(line)
 
 
 def install_systemd_boot(efi_directory):
@@ -138,17 +157,24 @@ def install_systemd_boot(efi_directory):
     print("Bootloader: systemd-boot")
     install_path = libcalamares.globalstorage.value("rootMountPoint")
     install_efi_directory = install_path + efi_directory
-    fallback_kernel_line = libcalamares.job.configuration["fallbackKernelLine"]
     uuid = get_uuid()
     distribution = get_bootloader_entry_name()
     file_name_sanitizer = str.maketrans(" /", "_-")
     distribution_translated = distribution.translate(file_name_sanitizer)
-    conf_path = os.path.join(install_efi_directory, "loader", "entries",
+    conf_path = os.path.join(install_efi_directory,
+                             "loader",
+                             "entries",
                              "{!s}.conf".format(distribution_translated))
-    fallback_path = os.path.join(install_efi_directory, "loader", "entries",
+    fallback_path = os.path.join(install_efi_directory,
+                                 "loader",
+                                 "entries",
                                  "{!s}-fallback.conf".format(distribution_translated))
-    loader_path = os.path.join(install_efi_directory, "loader", "loader.conf")
-    subprocess.call(["bootctl", "--path={!s}".format(install_efi_directory), "install"])
+    loader_path = os.path.join(install_efi_directory,
+                               "loader",
+                               "loader.conf")
+    subprocess.call(["bootctl",
+                     "--path={!s}".format(install_efi_directory),
+                     "install"])
     kernel_line = get_kernel_line("default")
     print("Configure: \"{!s}\"".format(kernel_line))
     create_systemd_boot_conf(uuid, conf_path, kernel_line)
@@ -176,22 +202,39 @@ def install_grub(efi_directory, fw_type):
             distribution = branding["bootloaderEntryName"]
             file_name_sanitizer = str.maketrans(" /", "_-")
             efi_bootloader_id = distribution.translate(file_name_sanitizer)
-        check_target_env_call([libcalamares.job.configuration["grubInstall"], "--target=x86_64-efi",
-                           "--efi-directory={!s}".format(efi_directory),
-                           "--bootloader-id={!s}".format(efi_bootloader_id),
-                           "--force"])
+        # get bitness of the underlying UEFI
+        try:
+            sysfile = open("/sys/firmware/efi/fw_platform_size", "r")
+            efi_bitness = sysfile.read(2)
+        except Exception:
+            # if the kernel is older than 4.0, the UEFI bitness likely isn't
+            # exposed to the userspace so we assume a 64 bit UEFI here
+            efi_bitness = "64"
+        bitness_translate = {"32": "--target=i386-efi", "64": "--target=x86_64-efi"}
+        check_target_env_call([libcalamares.job.configuration["grubInstall"],
+                               bitness_translate[efi_bitness],
+                               "--efi-directory={!s}".format(efi_directory),
+                               "--bootloader-id={!s}".format(efi_bootloader_id),
+                               "--force"])
         # Workaround for some UEFI firmwares
         check_target_env_call(["mkdir", "-p", "{!s}/boot".format(efi_directory_firmware)])
-        check_target_env_call(["cp", "{!s}/{!s}/grubx64.efi".format(efi_directory_firmware, efi_bootloader_id),
-                           "{!s}/boot/bootx64.efi".format(efi_directory_firmware)])
+        check_target_env_call(["cp", "{!s}/{!s}/grubx64.efi".format(efi_directory_firmware,
+                                                                    efi_bootloader_id),
+                               "{!s}/boot/bootx64.efi".format(efi_directory_firmware)])
     else:
         print("Bootloader: grub (bios)")
         boot_loader = libcalamares.globalstorage.value("bootLoader")
-        check_target_env_call([libcalamares.job.configuration["grubInstall"], "--target=i386-pc",
-                           "--recheck", "--force", boot_loader["installPath"]])
+        check_target_env_call([libcalamares.job.configuration["grubInstall"],
+                               "--target=i386-pc",
+                               "--recheck",
+                               "--force",
+                               boot_loader["installPath"]])
 
-    check_target_env_call([libcalamares.job.configuration["grubMkconfig"], "-o",
-                       libcalamares.job.configuration["grubCfg"]])
+    # The file specified in grubCfg should already be filled out
+    # by the grubcfg job module.
+    check_target_env_call([libcalamares.job.configuration["grubMkconfig"],
+                           "-o",
+                           libcalamares.job.configuration["grubCfg"]])
 
 
 def prepare_bootloader(fw_type):
@@ -216,13 +259,18 @@ def prepare_bootloader(fw_type):
                 device = boot_device[:-1]
 
                 if not boot_p or not device:
-                    return ("EFI directory \"{!s}\" not found!",
-                            "Boot partition: \"{!s}\"",
-                            "Boot device: \"{!s}\"".format(efi_directory, boot_p, device))
+                    return ("EFI directory \"{!s}\" not found!".format(efi_directory),
+                            "Boot partition: \"{!s}\"".format(boot_p),
+                            "Boot device: \"{!s}\"".format(device))
                 else:
                     print("EFI directory: \"{!s}\"".format(efi_directory))
                     print("Boot partition: \"{!s}\"".format(boot_p))
                     print("Boot device: \"{!s}\"".format(device))
+
+        if not device:
+            print("WARNING: no EFI system partition or EFI system partition mount point not set.")
+            print("         >>> no EFI bootloader will be installed <<<")
+            return None
         print("Set 'EF00' flag")
         subprocess.call(["sgdisk", "--typecode={!s}:EF00".format(boot_p), "{!s}".format(device)])
 
@@ -241,7 +289,6 @@ def run():
         return None
 
     target_env_call(["os-prober"])
-
     fw_type = libcalamares.globalstorage.value("firmwareType")
     prepare_bootloader(fw_type)
 

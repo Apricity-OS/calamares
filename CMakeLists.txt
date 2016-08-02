@@ -52,10 +52,16 @@ include( MacroLogFeature )
 set( QT_VERSION 5.4.0 )
 
 find_package( Qt5 ${QT_VERSION} CONFIG REQUIRED Core Gui Widgets LinguistTools Svg Quick QuickWidgets )
-find_package( YamlCpp 0.5.1 REQUIRED )
+find_package( YAMLCPP 0.5.1 REQUIRED )
 find_package( PolkitQt5-1 REQUIRED )
 
 option( WITH_PYTHON "Enable Python modules support." ON )
+option( WITH_CRASHREPORTER "Build with CrashReporter" ON )
+
+if( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/libcrashreporter-qt/CMakeLists.txt" )
+    message( STATUS "Build of crashreporter disabled." )
+    set( WITH_CRASHREPORTER OFF )
+endif()
 
 macro_optional_find_package( PythonLibs 3.3 )
 macro_log_feature(
@@ -91,10 +97,11 @@ set( CALAMARES_ORGANIZATION_NAME "Calamares" )
 set( CALAMARES_ORGANIZATION_DOMAIN "github.com/calamares" )
 set( CALAMARES_APPLICATION_NAME  "Calamares" )
 set( CALAMARES_DESCRIPTION_SUMMARY "The distribution-independent installer framework" )
-set( CALAMARES_TRANSLATION_LANGUAGES ar ast bg ca cs_CZ da de el en en_GB es_MX es eu fr hu id is it_IT ja lt nl pl pt_BR pt_PT ro ru sv th tr_TR zh_CN zh_TW )
+set( CALAMARES_TRANSLATION_LANGUAGES ar ast bg ca cs_CZ da de el en en_GB es_MX es eu fr hr hu id is it_IT ja lt nl pl pt_BR pt_PT ro ru sv th tr_TR zh_CN zh_TW )
 
+### Bump version here
 set( CALAMARES_VERSION_MAJOR 2 )
-set( CALAMARES_VERSION_MINOR 0 )
+set( CALAMARES_VERSION_MINOR 3 )
 set( CALAMARES_VERSION_PATCH 0 )
 set( CALAMARES_VERSION_RC 0 )
 
@@ -152,6 +159,9 @@ file( COPY CalamaresAddBrandingSubdirectory.cmake DESTINATION "${PROJECT_BINARY_
 
 set( CALAMARES_LIBRARIES calamares )
 
+set( THIRDPARTY_DIR "${CMAKE_SOURCE_DIR}/thirdparty" )
+
+add_subdirectory( thirdparty )
 add_subdirectory( src )
 
 macro_display_feature_log()

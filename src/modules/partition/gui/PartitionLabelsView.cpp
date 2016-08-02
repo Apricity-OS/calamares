@@ -55,6 +55,7 @@ buildUnknownDisklabelTexts( Device* dev )
 PartitionLabelsView::PartitionLabelsView( QWidget* parent )
     : QAbstractItemView( parent )
     , canBeSelected( []( const QModelIndex& ) { return true; } )
+    , m_extendedPartitionHidden( false )
 {
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
     setFrameStyle( QFrame::NoFrame );
@@ -160,7 +161,7 @@ PartitionLabelsView::getIndexesToDraw( const QModelIndex& parent ) const
         //HACK: horrible special casing follows.
         //      To save vertical space, we choose to hide short instances of free space.
         //      Arbitrary limit: 10MB.
-        const qint64 maxHiddenB = 10'000'000;
+        const qint64 maxHiddenB = 10000000;
         if ( index.data( PartitionModel::IsFreeSpaceRole ).toBool() &&
              index.data( PartitionModel::SizeRole ).toLongLong() <  maxHiddenB )
             continue;

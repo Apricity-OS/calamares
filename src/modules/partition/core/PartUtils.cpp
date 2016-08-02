@@ -68,6 +68,9 @@ canBeResized( Partition* candidate )
          !candidate->fileSystem().supportShrink() )
         return false;
 
+    if ( KPMHelpers::isPartitionFreeSpace( candidate ) )
+        return false;
+
     if ( candidate->roles().has( PartitionRole::Primary ) )
     {
         PartitionTable* table = dynamic_cast< PartitionTable* >( candidate->parent() );

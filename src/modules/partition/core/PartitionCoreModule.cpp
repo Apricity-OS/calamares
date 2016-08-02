@@ -34,6 +34,7 @@
 #include "jobs/FillGlobalStorageJob.h"
 #include "jobs/FormatPartitionJob.h"
 #include "jobs/ResizePartitionJob.h"
+#include "jobs/SetPartitionFlagsJob.h"
 
 #include "Typedefs.h"
 #include "utils/Logger.h"
@@ -111,19 +112,22 @@ void
 PartitionCoreModule::init()
 {
     CoreBackend* backend = CoreBackendManager::self()->backend();
-    auto devices = backend->scanDevices( true );
+    QList< Device* > devices = backend->scanDevices( true );
 
     // Remove the device which contains / from the list
-    for ( auto it = devices.begin(); it != devices.end(); )
-        if ( hasRootPartition( *it ) )
+    for ( QList< Device* >::iterator it = devices.begin(); it != devices.end(); )
+        if ( hasRootPartition( *it ) ||
+             (*it)->deviceNode().startsWith( "/dev/zram") )
             it = devices.erase( it );
         else
             ++it;
 
+    cDebug() << "LIST OF DETECTED DEVICES:\nnode\tcapacity\tname\tprettyName";
     for ( auto device : devices )
     {
         auto deviceInfo = new DeviceInfo( device );
         m_deviceInfos << deviceInfo;
+        cDebug() << device->deviceNode() << device->capacity() << device->name() << device->prettyName();
     }
     m_deviceModel->init( devices );
 
@@ -174,7 +178,9 @@ PartitionCoreModule::createImmutableDeviceCopy( Device* device )
 {
     CoreBackend* backend = CoreBackendManager::self()->backend();
 
-    Device* deviceBefore = backend->scanDevice( device->deviceNode() );
+    QString node = device->deviceNode();
+    cDebug() << "Creating immutable copy for node:" << node;
+    Device* deviceBefore = backend->scanDevice( node );
     return deviceBefore;
 }
 
@@ -199,7 +205,9 @@ PartitionCoreModule::createPartitionTable( Device* device, PartitionTable::Table
 }
 
 void
-PartitionCoreModule::createPartition( Device* device, Partition* partition )
+PartitionCoreModule::createPartition( Device *device,
+                                      Partition *partition,
+                                      PartitionTable::Flags flags )
 {
     auto deviceInfo = infoForDevice( device );
     Q_ASSERT( deviceInfo );
@@ -209,6 +217,12 @@ PartitionCoreModule::createPartition( Device* device, Partition* partition )
     job->updatePreview();
 
     deviceInfo->jobs << Calamares::job_ptr( job );
+
+    if ( flags != PartitionTable::FlagNone )
+    {
+        SetPartFlagsJob* fJob = new SetPartFlagsJob( device, partition, flags );
+        deviceInfo->jobs << Calamares::job_ptr( fJob );
+    }
 
     refresh();
 }
@@ -238,6 +252,16 @@ PartitionCoreModule::deletePartition( Device* device, Partition* partition )
     QList< Calamares::job_ptr >& jobs = deviceInfo->jobs;
     if ( partition->state() == Partition::StateNew )
     {
+        // First remove matching SetPartFlagsJobs
+        for ( auto it = jobs.begin(); it != jobs.end(); )
+        {
+            SetPartFlagsJob* job = qobject_cast< SetPartFlagsJob* >( it->data() );
+            if ( job && job->partition() == partition )
+                it = jobs.erase( it );
+            else
+                ++it;
+        }
+
         // Find matching CreatePartitionJob
         auto it = std::find_if( jobs.begin(), jobs.end(), [ partition ]( Calamares::job_ptr job )
         {
@@ -255,6 +279,7 @@ PartitionCoreModule::deletePartition( Device* device, Partition* partition )
             cDebug() << "Failed to remove partition from preview";
             return;
         }
+
         device->partitionTable()->updateUnallocated( *device );
         jobs.erase( it );
         // The partition is no longer referenced by either a job or the device
@@ -294,7 +319,10 @@ PartitionCoreModule::formatPartition( Device* device, Partition* partition )
 }
 
 void
-PartitionCoreModule::resizePartition( Device* device, Partition* partition, qint64 first, qint64 last )
+PartitionCoreModule::resizePartition( Device* device,
+                                      Partition* partition,
+                                      qint64 first,
+                                      qint64 last )
 {
     auto deviceInfo = infoForDevice( device );
     Q_ASSERT( deviceInfo );
@@ -302,6 +330,22 @@ PartitionCoreModule::resizePartition( Device* device, Partition* partition, qint
 
     ResizePartitionJob* job = new ResizePartitionJob( device, partition, first, last );
     job->updatePreview();
+    deviceInfo->jobs << Calamares::job_ptr( job );
+
+    refresh();
+}
+
+void
+PartitionCoreModule::setPartitionFlags( Device* device,
+                                        Partition* partition,
+                                        PartitionTable::Flags flags )
+{
+    auto deviceInfo = infoForDevice( device );
+    Q_ASSERT( deviceInfo );
+    PartitionModel::ResetHelper( partitionModelForDevice( device ) );
+
+    SetPartFlagsJob* job = new SetPartFlagsJob( device, partition, flags );
+
     deviceInfo->jobs << Calamares::job_ptr( job );
 
     refresh();

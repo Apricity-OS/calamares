@@ -2,7 +2,7 @@
 Name=Install Apricity OS
 GenericName=Live Installer
 Comment=Install the operating system to disk
-Exec=su -c "kwriteconfig --file kdeglobals --group General --key widgetStyle gtk && kwriteconfig --file kdeglobals --group Icons --key Theme Human && calamares -d"
+Exec=su -c "QT_QPA_PLATFORMTHEME=qt5ct QT_STYLE_OVERRIDE=gtk2 calamares -d 2>&1 | tee /tmp/calamares.log"
 Icon=/usr/share/icons/calamares.png
 Terminal=False
 Type=Application

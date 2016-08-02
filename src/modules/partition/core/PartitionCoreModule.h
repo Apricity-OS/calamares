@@ -1,7 +1,7 @@
 /* === This file is part of Calamares - <http://github.com/calamares> ===
  *
  *   Copyright 2014, Aurélien Gâteau <agateau@kde.org>
- *   Copyright 2014-2015, Teo Mrnjavac <teo@kde.org>
+ *   Copyright 2014-2016, Teo Mrnjavac <teo@kde.org>
  *
  *   Calamares is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -81,13 +81,16 @@ public:
 
     void createPartitionTable( Device* device, PartitionTable::TableType type );
 
-    void createPartition( Device* device, Partition* partition );
+    void createPartition( Device* device, Partition* partition,
+                          PartitionTable::Flags flags = PartitionTable::FlagNone );
 
     void deletePartition( Device* device, Partition* partition );
 
     void formatPartition( Device* device, Partition* partition );
 
     void resizePartition( Device* device, Partition* partition, qint64 first, qint64 last );
+
+    void setPartitionFlags( Device* device, Partition* partition, PartitionTable::Flags flags );
 
     void setBootLoaderInstallPath( const QString& path );
 
@@ -96,6 +99,7 @@ public:
     bool hasRootMountPoint() const;
 
     QList< Partition* > efiSystemPartitions() const;
+    Partition* findPartitionByMountPoint( const QString& mountPoint ) const;
 
     void revert();
     void revertAllDevices();
@@ -161,8 +165,6 @@ private:
     void scanForEfiSystemPartitions();
 
     DeviceInfo* infoForDevice( Device* ) const;
-
-    Partition* findPartitionByMountPoint( const QString& mountPoint ) const;
 
     OsproberEntryList m_osproberLines;
 
