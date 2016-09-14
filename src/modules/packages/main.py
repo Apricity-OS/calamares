@@ -87,6 +87,7 @@ class PackageManager:
             check_target_env_call(["pacman", "-Rs", "--noconfirm"] + pkgs)
         elif self.backend == "portage":
             check_target_env_call(["emerge", "-C"] + pkgs)
+            check_target_env_call(["emerge", "--depclean", "-q"])
         elif self.backend == "entropy":
             check_target_env_call(["equo", "rm"] + pkgs)
 
@@ -124,9 +125,6 @@ def run():
         run_operations(pkgman, entry)
 
     if libcalamares.globalstorage.contains("packageOperations"):
-        operations = libcalamares.globalstorage.value("packageOperations")
-
-        for entry in operations:
-            run_operations(pkgman, entry)
+        run_operations(pkgman, libcalamares.globalstorage.value("packageOperations"))
 
     return None

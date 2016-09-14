@@ -1,6 +1,6 @@
 /* === This file is part of Calamares - <http://github.com/calamares> ===
  *
- *   Copyright 2014-2015, Teo Mrnjavac <teo@kde.org>
+ *   Copyright 2014-2016, Teo Mrnjavac <teo@kde.org>
  *
  *   Calamares is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -205,6 +205,15 @@ BOOST_PYTHON_MODULE( libcalamares )
             "Returns the program's standard output, and raises a "
             "subprocess.CalledProcessError if something went wrong."
         )
+    );
+    bp::def(
+        "obscure",
+        &CalamaresPython::obscure,
+        bp::args( "s" ),
+        "Simple string obfuscation function based on KStringHandler::obscure.\n"
+        "Returns a string, generated using a simple symmetric encryption.\n"
+        "Applying the function to a string obscured by this function will result "
+        "in the original string."
     );
 }
 

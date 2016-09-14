@@ -64,6 +64,8 @@ public:
     PartitionCoreModule( QObject* parent = nullptr );
     ~PartitionCoreModule();
 
+    void init();
+
     DeviceModel* deviceModel() const;
 
     PartitionModel* partitionModelForDevice( Device* device ) const;
@@ -125,7 +127,7 @@ public:
 
     void dumpQueue() const;
 
-    OsproberEntryList osproberEntries() const;
+    const OsproberEntryList osproberEntries() const;
 
 Q_SIGNALS:
     void hasRootMountPointChanged( bool value );
@@ -159,7 +161,7 @@ private:
     bool m_isDirty = false;
     QString m_bootLoaderInstallPath;
 
-    void init();
+    void doInit();
     void updateHasRootMountPoint();
     void updateIsDirty();
     void scanForEfiSystemPartitions();
