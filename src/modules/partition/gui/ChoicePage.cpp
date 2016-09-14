@@ -68,20 +68,20 @@
  */
 ChoicePage::ChoicePage( QWidget* parent )
     : QWidget( parent )
-    , m_choice( NoChoice )
     , m_nextEnabled( false )
     , m_core( nullptr )
+    , m_choice( NoChoice )
+    , m_isEfi( false )
     , m_grp( nullptr )
     , m_alongsideButton( nullptr )
     , m_eraseButton( nullptr )
     , m_replaceButton( nullptr )
     , m_somethingElseButton( nullptr )
     , m_deviceInfoWidget( nullptr )
-    , m_lastSelectedDeviceIndex( -1 )
-    , m_isEfi( false )
     , m_beforePartitionBarsView( nullptr )
     , m_beforePartitionLabelsView( nullptr )
     , m_bootloaderComboBox( nullptr )
+    , m_lastSelectedDeviceIndex( -1 )
 {
     setupUi( this );
 
@@ -128,7 +128,8 @@ ChoicePage::ChoicePage( QWidget* parent )
     m_previewAfterLabel->hide();
     m_previewAfterFrame->hide();
     m_encryptWidget->hide();
-    // end
+    m_reuseHomeCheckBox->hide();
+    Calamares::JobQueue::instance()->globalStorage()->insert( "reuseHome", false );
 }
 
 
@@ -166,6 +167,8 @@ ChoicePage::init( PartitionCoreModule* core )
 
     connect( m_encryptWidget, &EncryptWidget::stateChanged,
              this, &ChoicePage::onEncryptWidgetStateChanged );
+    connect( m_reuseHomeCheckBox, &QCheckBox::stateChanged,
+             this, &ChoicePage::onHomeCheckBoxStateChanged );
 
     ChoicePage::applyDeviceChoice();
 }
@@ -374,14 +377,18 @@ ChoicePage::applyActionChoice( ChoicePage::Choice choice )
             } ),
             [ = ]
             {
-                PartitionActions::doAutopartition( m_core, selectedDevice(), m_encryptWidget->passphrase() );
+                PartitionActions::doAutopartition( m_core,
+                                                   selectedDevice(),
+                                                   m_encryptWidget->passphrase() );
                 emit deviceChosen();
             },
             this );
         }
         else
         {
-            PartitionActions::doAutopartition( m_core, selectedDevice(), m_encryptWidget->passphrase() );
+            PartitionActions::doAutopartition( m_core,
+                                               selectedDevice(),
+                                               m_encryptWidget->passphrase() );
             emit deviceChosen();
         }
 
@@ -400,7 +407,7 @@ ChoicePage::applyActionChoice( ChoicePage::Choice choice )
         updateNextEnabled();
 
         connect( m_beforePartitionBarsView->selectionModel(), SIGNAL( currentRowChanged( QModelIndex, QModelIndex ) ),
-                 this, SLOT( doReplaceSelectedPartition( QModelIndex, QModelIndex ) ),
+                 this, SLOT( onPartitionToReplaceSelected( QModelIndex, QModelIndex ) ),
                  Qt::UniqueConnection );
         break;
 
@@ -462,11 +469,11 @@ ChoicePage::doAlongsideSetupSplitter( const QModelIndex& current,
                                     ->value( "requiredStorageGB" )
                                     .toDouble();
 
-    qint64 requiredStorageB = ( requiredStorageGB + 0.1 + 2.0 ) * 1024 * 1024 * 1024;
+    qint64 requiredStorageB = qRound64( requiredStorageGB + 0.1 + 2.0 ) * 1024 * 1024 * 1024;
 
     m_afterPartitionSplitterWidget->setSplitPartition(
                 part->partitionPath(),
-                part->used() * 1.1,
+                qRound64( part->used() * 1.1 ),
                 part->capacity() - requiredStorageB,
                 part->capacity() / 2,
                 Calamares::Branding::instance()->
@@ -500,11 +507,23 @@ ChoicePage::onEncryptWidgetStateChanged()
         {
             doReplaceSelectedPartition( m_beforePartitionBarsView->
                                             selectionModel()->
-                                                currentIndex(),
-                                        QModelIndex() );
+                                                currentIndex() );
         }
     }
     updateNextEnabled();
+}
+
+
+void
+ChoicePage::onHomeCheckBoxStateChanged()
+{
+    if ( currentChoice() == Replace &&
+         m_beforePartitionBarsView->selectionModel()->currentIndex().isValid() )
+    {
+        doReplaceSelectedPartition( m_beforePartitionBarsView->
+                                        selectionModel()->
+                                            currentIndex() );
+    }
 }
 
 
@@ -616,14 +635,33 @@ ChoicePage::doAlongsideApply()
 
 
 void
-ChoicePage::doReplaceSelectedPartition( const QModelIndex& current,
-                                        const QModelIndex& previous )
+ChoicePage::onPartitionToReplaceSelected( const QModelIndex& current,
+                                          const QModelIndex& previous )
 {
     Q_UNUSED( previous );
     if ( !current.isValid() )
         return;
 
-    ScanningDialog::run( QtConcurrent::run( [ = ]
+    // Reset state on selection regardless of whether this will be used.
+    m_reuseHomeCheckBox->setChecked( false );
+
+    doReplaceSelectedPartition( current );
+}
+
+
+void
+ChoicePage::doReplaceSelectedPartition( const QModelIndex& current )
+{
+    if ( !current.isValid() )
+        return;
+
+    QString* homePartitionPath = new QString();
+    bool doReuseHomePartition = m_reuseHomeCheckBox->isChecked();
+
+    // NOTE: using by-ref captures because we need to write homePartitionPath and
+    //       doReuseHomePartition *after* the device revert, for later use.
+    ScanningDialog::run( QtConcurrent::run(
+    [ this, current ]( QString* homePartitionPath, bool doReuseHomePartition )
     {
         QMutexLocker locker( &m_coreMutex );
 
@@ -634,9 +672,14 @@ ChoicePage::doReplaceSelectedPartition( const QModelIndex& current,
 
         // if the partition is unallocated(free space), we don't replace it but create new one 
         // with the same first and last sector
-        Partition* selectedPartition = (Partition *)( current.data( PartitionModel::PartitionPtrRole ).value< void* >() );
+        Partition* selectedPartition =
+            static_cast< Partition* >( current.data( PartitionModel::PartitionPtrRole )
+                                       .value< void* >() );
         if ( KPMHelpers::isPartitionFreeSpace( selectedPartition ) )
         {
+            //NOTE: if the selected partition is free space, we don't deal with
+            //      a separate /home partition at all because there's no existing
+            //      rootfs to read it from.
             PartitionRole newRoles = PartitionRole( PartitionRole::Primary );
             PartitionNode* newParent = selectedDevice()->partitionTable();
 
@@ -684,16 +727,48 @@ ChoicePage::doReplaceSelectedPartition( const QModelIndex& current,
             // main DeviceModel, not the immutable copy.
             QString partPath = current.data( PartitionModel::PartitionPathRole ).toString();
             selectedPartition = KPMHelpers::findPartitionByPath( { selectedDevice() },
-                                                                    partPath );
+                                                                 partPath );
             if ( selectedPartition )
+            {
+                // Find out is the selected partition has a rootfs. If yes, then make the
+                // m_reuseHomeCheckBox visible and set its text to something meaningful.
+                homePartitionPath->clear();
+                for ( const OsproberEntry& osproberEntry : m_core->osproberEntries() )
+                    if ( osproberEntry.path == partPath )
+                        *homePartitionPath = osproberEntry.homePath;
+                if ( homePartitionPath->isEmpty() )
+                    doReuseHomePartition = false;
+
                 PartitionActions::doReplacePartition( m_core,
                                                       selectedDevice(),
                                                       selectedPartition,
                                                       m_encryptWidget->passphrase() );
+                Partition* homePartition = KPMHelpers::findPartitionByPath( { selectedDevice() },
+                                                                            *homePartitionPath );
+
+                Calamares::GlobalStorage* gs = Calamares::JobQueue::instance()->globalStorage();
+                if ( homePartition && doReuseHomePartition )
+                {
+                    PartitionInfo::setMountPoint( homePartition, "/home" );
+                    gs->insert( "reuseHome", true );
+                }
+                else
+                {
+                    gs->insert( "reuseHome", false );
+                }
+            }
         }
-    } ),
-    [=]
+    }, homePartitionPath, doReuseHomePartition ),
+    [ = ]
     {
+        m_reuseHomeCheckBox->setVisible( !homePartitionPath->isEmpty() );
+        if ( !homePartitionPath->isEmpty() )
+            m_reuseHomeCheckBox->setText( tr( "Reuse %1 as home partition for %2." )
+                                          .arg( *homePartitionPath )
+                                          .arg( Calamares::Branding::instance()->string(
+                                                Calamares::Branding::ShortProductName ) ) );
+        delete homePartitionPath;
+
         if ( m_isEfi )
             setupEfiSystemPartitionSelector();
 
@@ -802,6 +877,9 @@ ChoicePage::updateActionChoicePreview( ChoicePage::Choice choice )
                                                        PartitionBarsView::DrawNestedPartitions :
                                                        PartitionBarsView::NoNestedPartitions;
 
+    m_reuseHomeCheckBox->hide();
+    Calamares::JobQueue::instance()->globalStorage()->insert( "reuseHome", false );
+
     switch ( choice )
     {
     case Alongside:
@@ -820,8 +898,11 @@ ChoicePage::updateActionChoicePreview( ChoicePage::Choice choice )
             layout->addWidget( sizeLabel );
             sizeLabel->setWordWrap( true );
             connect( m_afterPartitionSplitterWidget, &PartitionSplitterWidget::partitionResized,
-                     this, [ this, sizeLabel ]( const QString& path, qint64 size, qint64 sizeNext )
+                     this, [ this, sizeLabel ]( const QString& path,
+                                                qint64 size,
+                                                qint64 sizeNext )
             {
+                Q_UNUSED( path )
                 sizeLabel->setText( tr( "%1 will be shrunk to %2MB and a new "
                                         "%3MB partition will be created for %4." )
                                     .arg( m_beforePartitionBarsView->selectionModel()->currentIndex().data().toString() )
@@ -836,7 +917,10 @@ ChoicePage::updateActionChoicePreview( ChoicePage::Choice choice )
 
             SelectionFilter filter = [ this ]( const QModelIndex& index )
             {
-                return PartUtils::canBeResized( (Partition*)( index.data( PartitionModel::PartitionPtrRole ).value< void* >() ) );
+                return PartUtils::canBeResized(
+                    static_cast< Partition* >(
+                        index.data( PartitionModel::PartitionPtrRole )
+                            .value< void* >() ) );
             };
             m_beforePartitionBarsView->setSelectionFilter( filter );
             m_beforePartitionLabelsView->setSelectionFilter( filter );
@@ -882,6 +966,7 @@ ChoicePage::updateActionChoicePreview( ChoicePage::Choice choice )
                 connect( m_core, &PartitionCoreModule::deviceReverted,
                          this, [ this ]( Device* dev )
                 {
+                    Q_UNUSED( dev )
                     if ( !m_bootloaderComboBox.isNull() )
                     {
                         if ( m_bootloaderComboBox->model() != m_core->bootLoaderModel() )
@@ -908,7 +993,10 @@ ChoicePage::updateActionChoicePreview( ChoicePage::Choice choice )
             {
                 SelectionFilter filter = [ this ]( const QModelIndex& index )
                 {
-                    return PartUtils::canBeReplaced( (Partition*)( index.data( PartitionModel::PartitionPtrRole ).value< void* >() ) );
+                    return PartUtils::canBeReplaced(
+                        static_cast< Partition* >(
+                            index.data( PartitionModel::PartitionPtrRole )
+                                .value< void* >() ) );
                 };
                 m_beforePartitionBarsView->setSelectionFilter( filter );
                 m_beforePartitionLabelsView->setSelectionFilter( filter );
@@ -1241,7 +1329,7 @@ OsproberEntryList
 ChoicePage::getOsproberEntriesForDevice( Device* device ) const
 {
     OsproberEntryList eList;
-    foreach ( const OsproberEntry& entry, m_core->osproberEntries() )
+    for ( const OsproberEntry& entry : m_core->osproberEntries() )
     {
         if ( entry.path.startsWith( device->deviceNode() ) )
             eList.append( entry );

@@ -20,6 +20,7 @@
 #include "core/PartitionCoreModule.h"
 
 #include "core/BootLoaderModel.h"
+#include "core/ColorUtils.h"
 #include "core/DeviceModel.h"
 #include "core/PartitionInfo.h"
 #include "core/PartitionIterator.h"
@@ -59,6 +60,36 @@ hasRootPartition( Device* device )
     for ( auto it = PartitionIterator::begin( device ); it != PartitionIterator::end( device ); ++it )
         if ( ( *it )->mountPoint() == "/" )
             return true;
+    return false;
+}
+
+static bool
+isIso9660( const Device* device )
+{
+    QString path = device->deviceNode();
+    if ( path.isEmpty() )
+        return false;
+
+    QProcess blkid;
+    blkid.start( "blkid", { path } );
+    blkid.waitForFinished();
+    QString output = QString::fromLocal8Bit( blkid.readAllStandardOutput() );
+    if ( output.contains( "iso9660" ) )
+        return true;
+
+    if ( device->partitionTable() &&
+         !device->partitionTable()->children().isEmpty() )
+    {
+        for ( const Partition* partition : device->partitionTable()->children() )
+        {
+            path = partition->partitionPath();
+            blkid.start( "blkid", { path } );
+            blkid.waitForFinished();
+            QString output = QString::fromLocal8Bit( blkid.readAllStandardOutput() );
+            if ( output.contains( "iso9660" ) )
+                return true;
+        }
+    }
     return false;
 }
 
@@ -104,20 +135,30 @@ PartitionCoreModule::PartitionCoreModule( QObject* parent )
 {
     if ( !KPMHelpers::initKPMcore() )
         qFatal( "Failed to initialize KPMcore backend" );
-    FileSystemFactory::init();
-    init();
 }
+
 
 void
 PartitionCoreModule::init()
 {
+    QMutexLocker locker( &m_revertMutex );
+    doInit();
+}
+
+
+void
+PartitionCoreModule::doInit()
+{
+    FileSystemFactory::init();
+
     CoreBackend* backend = CoreBackendManager::self()->backend();
     QList< Device* > devices = backend->scanDevices( true );
 
     // Remove the device which contains / from the list
     for ( QList< Device* >::iterator it = devices.begin(); it != devices.end(); )
         if ( hasRootPartition( *it ) ||
-             (*it)->deviceNode().startsWith( "/dev/zram") )
+             (*it)->deviceNode().startsWith( "/dev/zram") ||
+             isIso9660( *it ) )
             it = devices.erase( it );
         else
             ++it;
@@ -134,6 +175,35 @@ PartitionCoreModule::init()
     // The following PartUtils::runOsprober call in turn calls PartUtils::canBeResized,
     // which relies on a working DeviceModel.
     m_osproberLines = PartUtils::runOsprober( this );
+
+    // We perform a best effort of filling out filesystem UUIDs in m_osproberLines
+    // because we will need them later on in PartitionModel if partition paths
+    // change.
+    // It is a known fact that /dev/sda1-style device paths aren't persistent
+    // across reboots (and this doesn't affect us), but partition numbers can also
+    // change at runtime against our will just for shits and giggles.
+    // But why would that ever happen? What system could possibly be so poorly
+    // designed that it requires a partition path rearrangement at runtime?
+    // Logical partitions on an MSDOS disklabel of course.
+    // See DeletePartitionJob::updatePreview.
+    for ( auto deviceInfo : m_deviceInfos )
+    {
+        for ( auto it = PartitionIterator::begin( deviceInfo->device.data() );
+              it != PartitionIterator::end( deviceInfo->device.data() ); ++it )
+        {
+            Partition* partition = *it;
+            for ( auto jt = m_osproberLines.begin();
+                  jt != m_osproberLines.end(); ++jt )
+            {
+                if ( jt->path == partition->partitionPath() &&
+                     partition->fileSystem().supportGetUUID() != FileSystem::cmdSupportNone &&
+                     !partition->fileSystem().uuid().isEmpty() )
+                {
+                    jt->uuid = partition->fileSystem().uuid();
+                }
+            }
+        }
+    }
 
     for ( auto deviceInfo : m_deviceInfos )
     {
@@ -410,7 +480,7 @@ PartitionCoreModule::dumpQueue() const
 }
 
 
-OsproberEntryList
+const OsproberEntryList
 PartitionCoreModule::osproberEntries() const
 {
     return m_osproberLines;
@@ -546,7 +616,7 @@ PartitionCoreModule::revert()
     QMutexLocker locker( &m_revertMutex );
     qDeleteAll( m_deviceInfos );
     m_deviceInfos.clear();
-    init();
+    doInit();
     updateIsDirty();
     emit reverted();
 }

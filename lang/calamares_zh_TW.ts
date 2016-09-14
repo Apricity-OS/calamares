@@ -205,32 +205,32 @@ Output:
 <context>
     <name>Calamares::PythonJob</name>
     <message>
-        <location filename="../src/libcalamares/PythonJob.cpp" line="241"/>
+        <location filename="../src/libcalamares/PythonJob.cpp" line="250"/>
         <source>Running %1 operation.</source>
         <translation>正在執行 %1 操作。</translation>
     </message>
     <message>
-        <location filename="../src/libcalamares/PythonJob.cpp" line="254"/>
+        <location filename="../src/libcalamares/PythonJob.cpp" line="263"/>
         <source>Bad working directory path</source>
         <translation>不良的工作目錄路徑</translation>
     </message>
     <message>
-        <location filename="../src/libcalamares/PythonJob.cpp" line="255"/>
+        <location filename="../src/libcalamares/PythonJob.cpp" line="264"/>
         <source>Working directory %1 for python job %2 is not readable.</source>
         <translation>Python 行程 %2 作用中的目錄 %1 不具讀取權限。</translation>
     </message>
     <message>
-        <location filename="../src/libcalamares/PythonJob.cpp" line="265"/>
+        <location filename="../src/libcalamares/PythonJob.cpp" line="274"/>
         <source>Bad main script file</source>
         <translation>錯誤的主要腳本檔</translation>
     </message>
     <message>
-        <location filename="../src/libcalamares/PythonJob.cpp" line="266"/>
+        <location filename="../src/libcalamares/PythonJob.cpp" line="275"/>
         <source>Main script file %1 for python job %2 is not readable.</source>
         <translation>Python 行程 %2 的主要腳本檔 %1 無法讀取。</translation>
     </message>
     <message>
-        <location filename="../src/libcalamares/PythonJob.cpp" line="311"/>
+        <location filename="../src/libcalamares/PythonJob.cpp" line="320"/>
         <source>Boost.Python error in job &quot;%1&quot;.</source>
         <translation>行程 %1 中 Boost.Python 錯誤。</translation>
     </message>
@@ -304,22 +304,22 @@ The installer will quit and all changes will be lost.</source>
 <context>
     <name>CalamaresPython::Helper</name>
     <message>
-        <location filename="../src/libcalamares/PythonHelper.cpp" line="234"/>
+        <location filename="../src/libcalamares/PythonHelper.cpp" line="262"/>
         <source>Unknown exception type</source>
         <translation>未知的例外型別</translation>
     </message>
     <message>
-        <location filename="../src/libcalamares/PythonHelper.cpp" line="247"/>
+        <location filename="../src/libcalamares/PythonHelper.cpp" line="275"/>
         <source>unparseable Python error</source>
         <translation>無法解析的 Python 錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libcalamares/PythonHelper.cpp" line="263"/>
+        <location filename="../src/libcalamares/PythonHelper.cpp" line="291"/>
         <source>unparseable Python traceback</source>
         <translation>無法解析的 Python 回溯紀錄</translation>
     </message>
     <message>
-        <location filename="../src/libcalamares/PythonHelper.cpp" line="267"/>
+        <location filename="../src/libcalamares/PythonHelper.cpp" line="295"/>
         <source>Unfetchable Python error.</source>
         <translation>無法讀取的 Python 錯誤。</translation>
     </message>
@@ -340,12 +340,12 @@ The installer will quit and all changes will be lost.</source>
 <context>
     <name>CheckFileSystemJob</name>
     <message>
-        <location filename="../src/modules/partition/jobs/CheckFileSystemJob.cpp" line="34"/>
+        <location filename="../src/modules/partition/jobs/CheckFileSystemJob.cpp" line="39"/>
         <source>Checking file system on partition %1.</source>
         <translation>正在檢查分割區 %1 上的檔案系統。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/CheckFileSystemJob.cpp" line="58"/>
+        <location filename="../src/modules/partition/jobs/CheckFileSystemJob.cpp" line="77"/>
         <source>The file system check on partition %1 failed.</source>
         <translation>在分割區 %1 上的檔案系統檢查失敗。</translation>
     </message>
@@ -386,104 +386,109 @@ The installer will quit and all changes will be lost.</source>
         <translation>表單</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="117"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="123"/>
         <source>After:</source>
         <translation>之後：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="227"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="236"/>
         <source>&lt;strong&gt;Manual partitioning&lt;/strong&gt;&lt;br/&gt;You can create or resize partitions yourself.</source>
         <translation>&lt;strong&gt;手動分割&lt;/strong&gt;&lt;br/&gt;您可以自行建立或重新調整分割區大小。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="853"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="963"/>
         <source>Boot loader location:</source>
         <translation>開機載入器位置：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="798"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="906"/>
         <source>%1 will be shrunk to %2MB and a new %3MB partition will be created for %4.</source>
         <translation>%1 將會被縮減容量到 %2MB 而一個新的 %3MB 分割區將會被建立為 %4。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="115"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="121"/>
         <source>Select storage de&amp;vice:</source>
         <translation>選取儲存裝置(&amp;V)：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="116"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="783"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="824"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="900"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="122"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="888"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="934"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1014"/>
         <source>Current:</source>
         <translation>目前：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="784"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="766"/>
+        <source>Reuse %1 as home partition for %2.</source>
+        <translation>重新使用 %1 作為 %2 的家目錄分割區。</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="889"/>
         <source>&lt;strong&gt;Select a partition to shrink, then drag the bottom bar to resize&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;選取要縮減的分割區，然後拖曳底部條狀物來調整大小&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="891"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1005"/>
         <source>&lt;strong&gt;Select a partition to install on&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;選取分割區以安裝在其上&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="947"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1061"/>
         <source>An EFI system partition cannot be found anywhere on this system. Please go back and use manual partitioning to set up %1.</source>
         <translation>在這個系統上找不到任何的 EFI 系統分割區。請回到上一步並使用手動分割以設定 %1。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="957"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1071"/>
         <source>The EFI system partition at %1 will be used for starting %2.</source>
         <translation>在 %1 的 EFI 系統分割區將會在開始 %2 時使用。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="966"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1080"/>
         <source>EFI system partition:</source>
         <translation>EFI 系統分割區：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1051"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1165"/>
         <source>This storage device does not seem to have an operating system on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>這個儲存裝置上似乎還沒有作業系統。您想要怎麼做？&lt;br/&gt;在任何變更套用到儲存裝置上前，您都可以重新檢視並確認您的選擇。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1056"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1096"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1120"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1158"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1170"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1210"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1234"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1272"/>
         <source>&lt;strong&gt;Erase disk&lt;/strong&gt;&lt;br/&gt;This will &lt;font color=&quot;red&quot;&gt;delete&lt;/font&gt; all data currently present on the selected storage device.</source>
         <translation>&lt;strong&gt;抹除磁碟&lt;/strong&gt;&lt;br/&gt;這將會&lt;font color=&quot;red&quot;&gt;刪除&lt;/font&gt;目前選取的儲存裝置上所有的資料。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1085"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1199"/>
         <source>This storage device has %1 on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>這個儲存裝置上已經有 %1 了。您想要怎麼做？&lt;br/&gt;在任何變更套用到儲存裝置上前，您都可以重新檢視並確認您的選擇。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1060"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1091"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1115"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1153"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1174"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1205"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1229"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1267"/>
         <source>&lt;strong&gt;Install alongside&lt;/strong&gt;&lt;br/&gt;The installer will shrink a partition to make room for %1.</source>
         <translation>&lt;strong&gt;並存安裝&lt;/strong&gt;&lt;br/&gt;安裝程式將會縮減一個分割區以讓出空間給 %1。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1065"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1101"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1124"/>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1162"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1179"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1215"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1238"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1276"/>
         <source>&lt;strong&gt;Replace a partition&lt;/strong&gt;&lt;br/&gt;Replaces a partition with %1.</source>
         <translation>&lt;strong&gt;取代一個分割區&lt;/strong&gt;&lt;br/&gt;用 %1 取代一個分割區。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1110"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1224"/>
         <source>This storage device already has an operating system on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>這個儲存裝置上已經有一個作業系統了。您想要怎麼做？&lt;br/&gt;在任何變更套用到儲存裝置上前，您都可以重新檢視並確認您的選擇。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1148"/>
+        <location filename="../src/modules/partition/gui/ChoicePage.cpp" line="1262"/>
         <source>This storage device has multiple operating systems on it. What would you like to do?&lt;br/&gt;You will be able to review and confirm your choices before any change is made to the storage device.</source>
         <translation>這個儲存裝置上已經有多個作業系統了。您想要怎麼做？&lt;br/&gt;在任何變更套用到儲存裝置上前，您都可以重新檢視並確認您的選擇。</translation>
     </message>
@@ -537,57 +542,62 @@ The installer will quit and all changes will be lost.</source>
         <translation>建立一個分割區</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="38"/>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="55"/>
         <source>Partition &amp;Type:</source>
         <translation>分割區與類型 (&amp;T)：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="50"/>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="67"/>
         <source>&amp;Primary</source>
         <translation>主要分割區 (&amp;P)</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="60"/>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="77"/>
         <source>E&amp;xtended</source>
         <translation>延伸分割區 (&amp;x)</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="89"/>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="119"/>
         <source>Fi&amp;le System:</source>
         <translation>檔案系統 (&amp;I)：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="181"/>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="168"/>
         <source>Flags:</source>
         <translation>旗標：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="118"/>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="148"/>
         <source>&amp;Mount Point:</source>
         <translation>掛載點 (&amp;M)：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="164"/>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="38"/>
         <source>Si&amp;ze:</source>
         <translation>容量大小 (&amp;z) ：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="174"/>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.ui" line="48"/>
         <source> MB</source>
         <translation> MB</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/CreatePartitionDialog.cpp" line="136"/>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.cpp" line="63"/>
+        <source>En&amp;crypt</source>
+        <translation>加密(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.cpp" line="155"/>
         <source>Logical</source>
         <translation>邏輯磁區</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/CreatePartitionDialog.cpp" line="141"/>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.cpp" line="160"/>
         <source>Primary</source>
         <translation>主要磁區</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/CreatePartitionDialog.cpp" line="158"/>
+        <location filename="../src/modules/partition/gui/CreatePartitionDialog.cpp" line="177"/>
         <source>GPT</source>
         <translation>GPT</translation>
     </message>
@@ -694,67 +704,67 @@ The installer will quit and all changes will be lost.</source>
 <context>
     <name>CreateUserJob</name>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="49"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="50"/>
         <source>Create user %1</source>
         <translation>建立使用者 %1</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="56"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="57"/>
         <source>Create user &lt;strong&gt;%1&lt;/strong&gt;.</source>
         <translation>建立使用者 &lt;strong&gt;%1&lt;/strong&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="63"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="64"/>
         <source>Creating user %1.</source>
         <translation>正在建立使用者 %1。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="79"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="80"/>
         <source>Sudoers dir is not writable.</source>
         <translation>Sudoers 目錄不可寫入。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="83"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="84"/>
         <source>Cannot create sudoers file for writing.</source>
         <translation>無法建立要寫入的 sudoers 檔案。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="91"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="92"/>
         <source>Cannot chmod sudoers file.</source>
         <translation>無法修改 sudoers 檔案權限。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="97"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="98"/>
         <source>Cannot open groups file for reading.</source>
         <translation>無法開啟要讀取的 groups 檔案。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="136"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="160"/>
         <source>Cannot create user %1.</source>
         <translation>無法建立使用者 %1 。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="138"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="162"/>
         <source>useradd terminated with error code %1.</source>
         <translation>useradd 以錯誤代碼 %1 終止。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="143"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="167"/>
         <source>Cannot set full name for user %1.</source>
         <translation>無法設定使用者 %1 的全名。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="145"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="169"/>
         <source>chfn terminated with error code %1.</source>
         <translation>chfn 以錯誤代碼 %1 終止。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="155"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="179"/>
         <source>Cannot set home directory ownership for user %1.</source>
         <translation>無法將使用者 %1 設定為家目錄的擁有者。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/CreateUserJob.cpp" line="157"/>
+        <location filename="../src/modules/users/CreateUserJob.cpp" line="181"/>
         <source>chown terminated with error code %1.</source>
         <translation>chown 以錯誤代碼 %1 終止。</translation>
     </message>
@@ -894,19 +904,24 @@ The installer will quit and all changes will be lost.</source>
         <translation>形式</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="20"/>
+        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="32"/>
         <source>En&amp;crypt system</source>
         <translation>加密系統(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="30"/>
+        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="42"/>
         <source>Passphrase</source>
         <translation>通關密語</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="40"/>
+        <location filename="../src/modules/partition/gui/EncryptWidget.ui" line="52"/>
         <source>Confirm passphrase</source>
         <translation>確認通關密語</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/gui/EncryptWidget.cpp" line="150"/>
+        <source>Please enter the same passphrase in both boxes.</source>
+        <translation>請在兩個框框中輸入相同的通關密語。</translation>
     </message>
 </context>
 <context>
@@ -976,44 +991,62 @@ The installer will quit and all changes will be lost.</source>
 <context>
     <name>FormatPartitionJob</name>
     <message>
-        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="48"/>
+        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="49"/>
         <source>Format partition %1 (file system: %2, size: %3 MB) on %4.</source>
         <translation>格式化在 %4 的分割區 %1 （檔案系統： %2 ，大小： %3 MB）。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="59"/>
+        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="60"/>
         <source>Format &lt;strong&gt;%3MB&lt;/strong&gt; partition &lt;strong&gt;%1&lt;/strong&gt; with file system &lt;strong&gt;%2&lt;/strong&gt;.</source>
         <translation>以檔案系統 &lt;strong&gt;%2&lt;/strong&gt; 格式化 &lt;strong&gt;%3MB&lt;/strong&gt; 的分割區 &lt;strong&gt;%1&lt;/strong&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="70"/>
+        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="71"/>
         <source>Formatting partition %1 with file system %2.</source>
         <translation>正在以 %2 檔案系統格式化分割區 %1。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="82"/>
+        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="83"/>
         <source>The installer failed to format partition %1 on disk &apos;%2&apos;.</source>
         <translation>安裝程式格式化在磁碟 &apos;%2&apos; 上的分割區 %1 失敗。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="90"/>
+        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="91"/>
         <source>Could not open device &apos;%1&apos;.</source>
         <translation>無法開啟裝置 &apos;%1&apos;。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="99"/>
+        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="100"/>
         <source>Could not open partition table.</source>
         <translation>無法開啟分割區表格。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="107"/>
+        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="124"/>
         <source>The installer failed to create file system on partition %1.</source>
         <translation>安裝程式在分割區 %1 上建立檔案系統失敗。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="115"/>
+        <location filename="../src/modules/partition/jobs/FormatPartitionJob.cpp" line="133"/>
         <source>The installer failed to update partition table on disk &apos;%1&apos;.</source>
         <translation>安裝程式在磁碟 &apos;%1&apos; 上更新分割區表格失敗。</translation>
+    </message>
+</context>
+<context>
+    <name>GroupSelectionWidget</name>
+    <message>
+        <location filename="../src/modules/netinstall/widgets/groupselectionwidget.ui" line="20"/>
+        <source>Frame</source>
+        <translation>框架</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/netinstall/widgets/groupselectionwidget.ui" line="29"/>
+        <source>group</source>
+        <translation>群組</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/netinstall/widgets/groupselectionwidget.ui" line="36"/>
+        <source>description</source>
+        <translation>描述</translation>
     </message>
 </context>
 <context>
@@ -1161,41 +1194,54 @@ The installer will quit and all changes will be lost.</source>
 <context>
     <name>LocalePage</name>
     <message>
-        <location filename="../src/modules/locale/LocalePage.cpp" line="158"/>
-        <location filename="../src/modules/locale/LocalePage.cpp" line="169"/>
-        <source>The system locale is set to %1.</source>
-        <translation>系統語系設定為 %1。</translation>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="174"/>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="237"/>
+        <source>The system language will be set to %1.</source>
+        <translation>系統語言將會設定為 %1。</translation>
     </message>
     <message>
-        <location filename="../src/modules/locale/LocalePage.cpp" line="166"/>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="206"/>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="240"/>
+        <source>The numbers and dates locale will be set to %1.</source>
+        <translation>數字與日期語系將會被設定為 %1。</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="216"/>
         <source>Region:</source>
         <translation>地區</translation>
     </message>
     <message>
-        <location filename="../src/modules/locale/LocalePage.cpp" line="167"/>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="217"/>
         <source>Zone:</source>
         <translation>時區</translation>
     </message>
     <message>
-        <location filename="../src/modules/locale/LocalePage.cpp" line="172"/>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="221"/>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="222"/>
         <source>&amp;Change...</source>
         <translation>變更...(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/modules/locale/LocalePage.cpp" line="290"/>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="387"/>
         <source>Set timezone to %1/%2.&lt;br/&gt;</source>
         <translation>設定時區為 %1/%2 。&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/locale/LocalePage.cpp" line="462"/>
+        <source>%1 (%2)</source>
+        <extracomment>Language (Country)</extracomment>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
     <name>LocaleViewStep</name>
     <message>
-        <location filename="../src/modules/locale/LocaleViewStep.cpp" line="48"/>
+        <location filename="../src/modules/locale/LocaleViewStep.cpp" line="52"/>
         <source>Loading location data...</source>
         <translation>讀取位置資料 ...</translation>
     </message>
     <message>
-        <location filename="../src/modules/locale/LocaleViewStep.cpp" line="82"/>
+        <location filename="../src/modules/locale/LocaleViewStep.cpp" line="160"/>
         <source>Location</source>
         <translation>位置</translation>
     </message>
@@ -1250,6 +1296,22 @@ The installer will quit and all changes will be lost.</source>
     </message>
 </context>
 <context>
+    <name>NetInstallPage</name>
+    <message>
+        <location filename="../src/modules/netinstall/NetInstallPage.cpp" line="98"/>
+        <source>Network Installation. (Disabled: Unable to fetch package lists, check your network connection)</source>
+        <translation>網路安裝。（已停用：無法擷取軟體包清單，請檢查您的網路連線）</translation>
+    </message>
+</context>
+<context>
+    <name>NetInstallViewStep</name>
+    <message>
+        <location filename="../src/modules/netinstall/NetInstallViewStep.cpp" line="50"/>
+        <source>Package selection</source>
+        <translation>軟體包選擇</translation>
+    </message>
+</context>
+<context>
     <name>Page_Keyboard</name>
     <message>
         <location filename="../src/modules/keyboard/KeyboardPage.ui" line="14"/>
@@ -1277,7 +1339,7 @@ The installer will quit and all changes will be lost.</source>
     <message>
         <location filename="../src/modules/users/page_usersetup.ui" line="36"/>
         <source>What is your name?</source>
-        <translation>尊姓大名？</translation>
+        <translation>該如何稱呼您？</translation>
     </message>
     <message>
         <location filename="../src/modules/users/page_usersetup.ui" line="117"/>
@@ -1371,7 +1433,12 @@ The installer will quit and all changes will be lost.</source>
         <translation>%1 的新分割區</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionLabelsView.cpp" line="220"/>
+        <location filename="../src/modules/partition/gui/PartitionLabelsView.cpp" line="205"/>
+        <source>New partition</source>
+        <translation>新分割區</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/partition/gui/PartitionLabelsView.cpp" line="222"/>
         <source>%1  %2</source>
         <translation>%1  %2</translation>
     </message>
@@ -1391,22 +1458,22 @@ The installer will quit and all changes will be lost.</source>
         <translation>新分割區</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/core/PartitionModel.cpp" line="242"/>
+        <location filename="../src/modules/partition/core/PartitionModel.cpp" line="257"/>
         <source>Name</source>
         <translation>名稱</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/core/PartitionModel.cpp" line="244"/>
+        <location filename="../src/modules/partition/core/PartitionModel.cpp" line="259"/>
         <source>File System</source>
         <translation>檔案系統</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/core/PartitionModel.cpp" line="246"/>
+        <location filename="../src/modules/partition/core/PartitionModel.cpp" line="261"/>
         <source>Mount Point</source>
         <translation>掛載點</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/core/PartitionModel.cpp" line="248"/>
+        <location filename="../src/modules/partition/core/PartitionModel.cpp" line="263"/>
         <source>Size</source>
         <translation>大小</translation>
     </message>
@@ -1429,32 +1496,32 @@ The installer will quit and all changes will be lost.</source>
         <translation>將所有變更恢復原狀 (&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionPage.ui" line="84"/>
+        <location filename="../src/modules/partition/gui/PartitionPage.ui" line="87"/>
         <source>New Partition &amp;Table</source>
         <translation>新的分割表格 (&amp;T)</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionPage.ui" line="104"/>
+        <location filename="../src/modules/partition/gui/PartitionPage.ui" line="107"/>
         <source>&amp;Create</source>
         <translation>新增 (&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionPage.ui" line="111"/>
+        <location filename="../src/modules/partition/gui/PartitionPage.ui" line="114"/>
         <source>&amp;Edit</source>
         <translation>編輯 (&amp;E)</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionPage.ui" line="118"/>
+        <location filename="../src/modules/partition/gui/PartitionPage.ui" line="121"/>
         <source>&amp;Delete</source>
         <translation>刪除 (&amp;D)</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionPage.ui" line="145"/>
+        <location filename="../src/modules/partition/gui/PartitionPage.ui" line="148"/>
         <source>Install boot &amp;loader on:</source>
         <translation>安裝開機載入器在(&amp;L)：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionPage.cpp" line="153"/>
+        <location filename="../src/modules/partition/gui/PartitionPage.cpp" line="156"/>
         <source>Are you sure you want to create a new partition table on %1?</source>
         <translation>您是否確定要在 %1 上建立一個新的分割區表格？</translation>
     </message>
@@ -1462,87 +1529,87 @@ The installer will quit and all changes will be lost.</source>
 <context>
     <name>PartitionViewStep</name>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="69"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="70"/>
         <source>Gathering system information...</source>
         <translation>蒐集系統資訊中...</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="119"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="121"/>
         <source>Partitions</source>
         <translation>分割區</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="156"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="158"/>
         <source>Install %1 &lt;strong&gt;alongside&lt;/strong&gt; another operating system.</source>
         <translation>將 %1 安裝在其他作業系統&lt;strong&gt;旁邊&lt;/strong&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="161"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="163"/>
         <source>&lt;strong&gt;Erase&lt;/strong&gt; disk and install %1.</source>
         <translation>&lt;strong&gt;抹除&lt;/strong&gt;磁碟並安裝 %1。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="166"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="168"/>
         <source>&lt;strong&gt;Replace&lt;/strong&gt; a partition with %1.</source>
         <translation>以 %1 &lt;strong&gt;取代&lt;/strong&gt;一個分割區。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="171"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="173"/>
         <source>&lt;strong&gt;Manual&lt;/strong&gt; partitioning.</source>
         <translation>&lt;strong&gt;手動&lt;/strong&gt;分割</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="184"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="186"/>
         <source>Install %1 &lt;strong&gt;alongside&lt;/strong&gt; another operating system on disk &lt;strong&gt;%2&lt;/strong&gt; (%3).</source>
         <translation>將 %1 安裝在磁碟 &lt;strong&gt;%2&lt;/strong&gt; (%3) 上的另一個作業系統&lt;strong&gt;旁邊&lt;/strong&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="191"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="193"/>
         <source>&lt;strong&gt;Erase&lt;/strong&gt; disk &lt;strong&gt;%2&lt;/strong&gt; (%3) and install %1.</source>
         <translation>&lt;strong&gt;抹除&lt;/strong&gt; 磁碟 &lt;strong&gt;%2&lt;/strong&gt; (%3) 並且安裝 %1。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="198"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="200"/>
         <source>&lt;strong&gt;Replace&lt;/strong&gt; a partition on disk &lt;strong&gt;%2&lt;/strong&gt; (%3) with %1.</source>
         <translation>以 %1 &lt;strong&gt;取代&lt;/strong&gt; 一個在磁碟 &lt;strong&gt;%2&lt;/strong&gt; (%3) 上的分割區。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="205"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="207"/>
         <source>&lt;strong&gt;Manual&lt;/strong&gt; partitioning on disk &lt;strong&gt;%1&lt;/strong&gt; (%2).</source>
         <translation>在磁碟 &lt;strong&gt;%1&lt;/strong&gt; (%2) 上&lt;strong&gt;手動&lt;/strong&gt;分割。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="213"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="215"/>
         <source>Disk &lt;strong&gt;%1&lt;/strong&gt; (%2)</source>
         <translation>磁碟 &lt;strong&gt;%1&lt;/strong&gt; (%2)</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="241"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="243"/>
         <source>Current:</source>
         <translation>目前：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="257"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="259"/>
         <source>After:</source>
         <translation>之後：</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="399"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="403"/>
         <source>No EFI system partition configured</source>
         <translation>未設定 EFI 系統分割區</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="400"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="404"/>
         <source>An EFI system partition is necessary to start %1.&lt;br/&gt;&lt;br/&gt;To configure an EFI system partition, go back and select or create a FAT32 filesystem with the &lt;strong&gt;esp&lt;/strong&gt; flag enabled and mount point &lt;strong&gt;%2&lt;/strong&gt;.&lt;br/&gt;&lt;br/&gt;You can continue without setting up an EFI system partition but your system may fail to start.</source>
         <translation>需要一個 EFI 系統分割區以啟動 %1。&lt;br/&gt;&lt;br/&gt;要設定 EFI 系統分割區，回到上一步並選取或建立一個包含啟用的 &lt;strong&gt;esp&lt;/strong&gt; 旗標以及掛載點 &lt;strong&gt;%2&lt;/strong&gt; 的 FAT32 檔案系統。&lt;br/&gt;&lt;br/&gt;您也可以不設定 EFI 系統分割區並繼續，但是您的系統可能會啟動失敗。</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="414"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="418"/>
         <source>EFI system partition flag not set</source>
         <translation>EFI 系統分割區旗標未設定</translation>
     </message>
     <message>
-        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="415"/>
+        <location filename="../src/modules/partition/gui/PartitionViewStep.cpp" line="419"/>
         <source>An EFI system partition is necessary to start %1.&lt;br/&gt;&lt;br/&gt;A partition was configured with mount point &lt;strong&gt;%2&lt;/strong&gt; but its &lt;strong&gt;esp&lt;/strong&gt; flag is not set.&lt;br/&gt;To set the flag, go back and edit the partition.&lt;br/&gt;&lt;br/&gt;You can continue without setting the flag but your system may fail to start.</source>
         <translation>需要一個 EFI 系統分割區以啟動 %1。&lt;br/&gt;&lt;br/&gt;有一個掛載點設定為 &lt;strong&gt;%2&lt;/strong&gt; 但未設定 &lt;strong&gt;esp&lt;/strong&gt; 旗標的分割區。&lt;br/&gt;要設定此旗標，回到上一步並編輯分割區。&lt;br/&gt;&lt;br/&gt;您也可以不設定旗標而繼續，但您的系統可能會啟動失敗。</translation>
     </message>
@@ -1950,12 +2017,12 @@ The installer will quit and all changes will be lost.</source>
         <translation>連結建立失敗，目標：%1；連結名稱：%2</translation>
     </message>
     <message>
-        <location filename="../src/modules/locale/SetTimezoneJob.cpp" line="95"/>
+        <location filename="../src/modules/locale/SetTimezoneJob.cpp" line="96"/>
         <source>Cannot set timezone,</source>
         <translation>無法設定時區。</translation>
     </message>
     <message>
-        <location filename="../src/modules/locale/SetTimezoneJob.cpp" line="96"/>
+        <location filename="../src/modules/locale/SetTimezoneJob.cpp" line="97"/>
         <source>Cannot open /etc/timezone for writing</source>
         <translation>無法開啟要寫入的 /etc/timezone</translation>
     </message>
@@ -1979,33 +2046,33 @@ The installer will quit and all changes will be lost.</source>
 <context>
     <name>UsersPage</name>
     <message>
-        <location filename="../src/modules/users/UsersPage.cpp" line="268"/>
+        <location filename="../src/modules/users/UsersPage.cpp" line="269"/>
         <source>Your username is too long.</source>
         <translation>您的使用者名稱太長了。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/UsersPage.cpp" line="278"/>
+        <location filename="../src/modules/users/UsersPage.cpp" line="279"/>
         <source>Your username contains invalid characters. Only lowercase letters and numbers are allowed.</source>
         <translation>您的使用者名稱含有無效的字元。只能使用小寫字母及數字。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/UsersPage.cpp" line="322"/>
+        <location filename="../src/modules/users/UsersPage.cpp" line="323"/>
         <source>Your hostname is too short.</source>
         <translation>您的主機名稱太短了。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/UsersPage.cpp" line="333"/>
+        <location filename="../src/modules/users/UsersPage.cpp" line="334"/>
         <source>Your hostname is too long.</source>
         <translation>您的主機名稱太長了。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/UsersPage.cpp" line="344"/>
+        <location filename="../src/modules/users/UsersPage.cpp" line="345"/>
         <source>Your hostname contains invalid characters. Only letters, numbers and dashes are allowed.</source>
         <translation>您的主機名稱含有無效的字元。只能使用字母、數字及破折號。</translation>
     </message>
     <message>
-        <location filename="../src/modules/users/UsersPage.cpp" line="375"/>
-        <location filename="../src/modules/users/UsersPage.cpp" line="408"/>
+        <location filename="../src/modules/users/UsersPage.cpp" line="376"/>
+        <location filename="../src/modules/users/UsersPage.cpp" line="409"/>
         <source>Your passwords do not match!</source>
         <translation>密碼不符！</translation>
     </message>

@@ -1,6 +1,6 @@
 /* === This file is part of Calamares - <http://github.com/calamares> ===
  *
- *   Copyright 2014, Teo Mrnjavac <teo@kde.org>
+ *   Copyright 2014-2016, Teo Mrnjavac <teo@kde.org>
  *
  *   Calamares is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include "PythonHelper.h"
 #include "utils/Logger.h"
 #include "utils/CalamaresUtilsSystem.h"
+#include "utils/CalamaresUtils.h"
 
 #include <QDir>
 
@@ -188,6 +189,13 @@ PythonJobInterface::setprogress( qreal progress )
 {
     if ( progress >= 0 && progress <= 1 )
         m_parent->emitProgress( progress );
+}
+
+
+std::string
+obscure( const std::string& string )
+{
+    return CalamaresUtils::obscure( QString::fromStdString( string ) ).toStdString();
 }
 
 }
