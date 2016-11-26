@@ -153,8 +153,8 @@ CreateUserJob::exec()
                               "-s",
                               "/bin/bash",
                               "-U",
-                              "-G",
-                              defaultGroups,
+                              "-c",
+                              m_fullName,
                               m_userName } );
     if ( ec )
         return Calamares::JobResult::error( tr( "Cannot create user %1." )
@@ -162,11 +162,16 @@ CreateUserJob::exec()
                                             tr( "useradd terminated with error code %1." )
                                                 .arg( ec ) );
 
-    ec = CalamaresUtils::System::instance()->targetEnvCall( { "chfn", "-f", m_fullName, m_userName } );
+    ec = CalamaresUtils::System::instance()->
+             targetEnvCall( { "usermod",
+                              "-aG",
+                              defaultGroups,
+                              m_userName } );
     if ( ec )
-        return Calamares::JobResult::error( tr( "Cannot set full name for user %1." )
-                                                .arg( m_userName ),
-                                            tr( "chfn terminated with error code %1." )
+        return Calamares::JobResult::error( tr( "Cannot add user %1 to groups: %2." )
+                                                .arg( m_userName )
+                                                .arg( defaultGroups ),
+                                            tr( "usermod terminated with error code %1." )
                                                 .arg( ec ) );
 
     ec = CalamaresUtils::System::instance()->

@@ -36,6 +36,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QLabel>
+#include <QNetworkAccessManager>
 #include <QProcess>
 #include <QTimer>
 
@@ -185,6 +186,7 @@ RequirementsChecker::widget() const
 void
 RequirementsChecker::setConfigurationMap( const QVariantMap& configurationMap )
 {
+    bool incompleteConfiguration = false;
     if ( configurationMap.contains( "requiredStorage" ) &&
          ( configurationMap.value( "requiredStorage" ).type() == QVariant::Double ||
            configurationMap.value( "requiredStorage" ).type() == QVariant::Int ) )
@@ -199,6 +201,7 @@ RequirementsChecker::setConfigurationMap( const QVariantMap& configurationMap )
     else
     {
         m_requiredStorageGB = 3.;
+        incompleteConfiguration = true;
     }
 
     if ( configurationMap.contains( "requiredRam" ) &&
@@ -208,11 +211,15 @@ RequirementsChecker::setConfigurationMap( const QVariantMap& configurationMap )
         bool ok = false;
         m_requiredRamGB = configurationMap.value( "requiredRam" ).toDouble( &ok );
         if ( !ok )
+        {
             m_requiredRamGB = 1.;
+            incompleteConfiguration = true;
+        }
     }
     else
     {
         m_requiredRamGB = 1.;
+        incompleteConfiguration = true;
     }
 
     if ( configurationMap.contains( "check" ) &&
@@ -221,12 +228,27 @@ RequirementsChecker::setConfigurationMap( const QVariantMap& configurationMap )
         m_entriesToCheck.clear();
         m_entriesToCheck.append( configurationMap.value( "check" ).toStringList() );
     }
+    else
+        incompleteConfiguration = true;
 
     if ( configurationMap.contains( "required" ) &&
          configurationMap.value( "required" ).type() == QVariant::List )
     {
         m_entriesToRequire.clear();
         m_entriesToRequire.append( configurationMap.value( "required" ).toStringList() );
+    }
+    else
+        incompleteConfiguration = true;
+
+    if ( incompleteConfiguration )
+    {
+        cDebug() << "WARNING: The RequirementsChecker configuration map provided by "
+                    "the welcome module configuration file is incomplete or "
+                    "incorrect.\n"
+                    "Startup will continue for debugging purposes, but one or "
+                    "more checks might not function correctly.\n"
+                    "RequirementsChecker configuration map:\n"
+                 << configurationMap;
     }
 }
 
@@ -315,32 +337,8 @@ RequirementsChecker::checkHasPower()
 bool
 RequirementsChecker::checkHasInternet()
 {
-    const QString NM_SVC_NAME( "org.freedesktop.NetworkManager" );
-    const QString NM_INTF_NAME( "org.freedesktop.NetworkManager" );
-    const QString NM_PATH( "/org/freedesktop/NetworkManager" );
-    const int NM_STATE_CONNECTED_GLOBAL = 70;
-
-    QDBusInterface nmIntf( NM_SVC_NAME,
-                           NM_PATH,
-                           NM_INTF_NAME,
-                           QDBusConnection::systemBus(), 0 );
-
-    bool ok = false;
-    int nmState = nmIntf.property( "state" ).toInt( &ok );
-
-    if ( !ok || !nmIntf.isValid() )
-    {
-        // We can't talk to NM, so no idea.  Wild guess: we're connected
-        // using ssh with X forwarding, and are therefore connected.  This
-        // allows us to proceed with a minimum of complaint.
-        Calamares::JobQueue::instance()->globalStorage()->insert( "hasInternet", true );
-        return true;
-    }
-
-    bool hasInternet = nmState == NM_STATE_CONNECTED_GLOBAL;
-
-    Calamares::JobQueue::instance()->globalStorage()->insert( "hasInternet", hasInternet );
-    return hasInternet;
+    // default to true in the QNetworkAccessManager::UnknownAccessibility case
+    return QNetworkAccessManager(this).networkAccessible() != QNetworkAccessManager::NotAccessible;
 }
 
 

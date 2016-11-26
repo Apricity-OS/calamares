@@ -21,6 +21,7 @@
 
 import os
 import re
+import subprocess
 
 import libcalamares
 
@@ -102,11 +103,13 @@ class FstabGenerator(object):
     :param mount_options:
     :param ssd_extra_mount_options:
     """
-    def __init__(self, partitions, root_mount_point, mount_options, ssd_extra_mount_options):
+    def __init__(self, partitions, root_mount_point, mount_options,
+                 ssd_extra_mount_options, crypttab_options):
         self.partitions = partitions
         self.root_mount_point = root_mount_point
         self.mount_options = mount_options
         self.ssd_extra_mount_options = ssd_extra_mount_options
+        self.crypttab_options = crypttab_options
         self.ssd_disks = set()
         self.root_is_ssd = False
 
@@ -152,21 +155,20 @@ class FstabGenerator(object):
         if not mapper_name or not luks_uuid:
             return None
 
-        if mount_point == "/":
-            return None
-
         return dict(
             name=mapper_name,
             device="UUID=" + luks_uuid,
             password="/crypto_keyfile.bin",
+            options=self.crypttab_options,
         )
 
     def print_crypttab_line(self, dct, file=None):
         """ Prints line to '/etc/crypttab' file. """
-        line = "{:21} {:<45} {}".format(dct["name"],
-                                        dct["device"],
-                                        dct["password"],
-                                       )
+        line = "{:21} {:<45} {} {}".format(dct["name"],
+                                           dct["device"],
+                                           dct["password"],
+                                           dct["options"],
+                                          )
 
         print(line, file=file)
 
@@ -179,10 +181,33 @@ class FstabGenerator(object):
             print(FSTAB_HEADER, file=fstab_file)
 
             for partition in self.partitions:
-                dct = self.generate_fstab_line_info(partition)
+                # Special treatment for a btrfs root with @ and @home subvolumes
+                if partition["fs"] == "btrfs" and partition["mountPoint"] == "/":
+                    output = subprocess.check_output(['btrfs',
+                                                      'subvolume',
+                                                      'list',
+                                                      self.root_mount_point])
+                    output_lines = output.splitlines()
+                    for line in output_lines:
+                        if line.endswith(b'path @'):
+                            root_entry = partition
+                            root_entry["subvol"] = "@"
+                            dct = self.generate_fstab_line_info(root_entry)
+                            if dct:
+                                self.print_fstab_line(dct, file=fstab_file)
+                        elif line.endswith(b'path @home'):
+                            home_entry = partition
+                            home_entry["mountPoint"] = "/home"
+                            home_entry["subvol"] = "@home"
+                            dct = self.generate_fstab_line_info(home_entry)
+                            if dct:
+                                self.print_fstab_line(dct, file=fstab_file)
 
-                if dct:
-                    self.print_fstab_line(dct, file=fstab_file)
+                else:
+                    dct = self.generate_fstab_line_info(partition)
+
+                    if dct:
+                        self.print_fstab_line(dct, file=fstab_file)
 
             if self.root_is_ssd:
                 # Mount /tmp on a tmpfs
@@ -223,12 +248,21 @@ class FstabGenerator(object):
         if mount_point == "/":
             self.root_is_ssd = is_ssd
 
+        if filesystem == "btrfs" and "subvol" in partition:
+            return dict(device="UUID=" + partition["uuid"],
+                        mount_point=mount_point,
+                        fs=filesystem,
+                        options=",".join(["subvol={}".format(partition["subvol"]),
+                                          options]),
+                        check=check,
+                        )
+
         return dict(device="UUID=" + partition["uuid"],
                     mount_point=mount_point or "swap",
                     fs=filesystem,
                     options=options,
                     check=check,
-                   )
+                    )
 
     def print_fstab_line(self, dct, file=None):
         """ Prints line to '/etc/fstab' file. """
@@ -258,9 +292,11 @@ def run():
     root_mount_point = global_storage.value("rootMountPoint")
     mount_options = conf["mountOptions"]
     ssd_extra_mount_options = conf.get("ssdExtraMountOptions", {})
+    crypttab_options = conf.get("crypttabOptions", "luks")
     generator = FstabGenerator(partitions,
                                root_mount_point,
                                mount_options,
-                               ssd_extra_mount_options)
+                               ssd_extra_mount_options,
+                               crypttab_options)
 
     return generator.run()

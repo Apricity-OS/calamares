@@ -250,6 +250,8 @@ PartitionViewStep::createSummaryWidget() const
         previewLabels->setModel( info.partitionModelAfter );
         preview->setSelectionMode( QAbstractItemView::NoSelection );
         previewLabels->setSelectionMode( QAbstractItemView::NoSelection );
+        previewLabels->setCustomNewRootLabel( Calamares::Branding::instance()->
+                                              string( Calamares::Branding::BootloaderEntryName ) );
         info.partitionModelAfter->setParent( widget );
         field = new QVBoxLayout;
         CalamaresUtils::unmarginLayout( field );
@@ -435,7 +437,39 @@ PartitionViewStep::onLeave()
                 QMessageBox::warning( m_manualPartitionPage,
                                       message,
                                       description );
-                return;
+            }
+        }
+
+        Partition* root_p = m_core->findPartitionByMountPoint( "/" );
+        Partition* boot_p = m_core->findPartitionByMountPoint( "/boot" );
+
+        if ( root_p and boot_p )
+        {
+            QString message;
+            QString description;
+
+            // If the root partition is encrypted, and there's a separate boot
+            // partition which is not encrypted
+            if ( root_p->fileSystem().type() == FileSystem::Luks &&
+                 boot_p->fileSystem().type() != FileSystem::Luks )
+            {
+                message = tr( "Boot partition not encrypted" );
+                description = tr( "A separate boot partition was set up together with "
+                                  "an encrypted root partition, but the boot partition "
+                                  "is not encrypted."
+                                  "<br/><br/>"
+                                  "There are security concerns with this kind of "
+                                  "setup, because important system files are kept "
+                                  "on an unencrypted partition.<br/>"
+                                  "You may continue if you wish, but filesystem "
+                                  "unlocking will happen later during system startup."
+                                  "<br/>To encrypt the boot partition, go back and "
+                                  "recreate it, selecting <strong>Encrypt</strong> "
+                                  "in the partition creation window." );
+
+                QMessageBox::warning( m_manualPartitionPage,
+                                      message,
+                                      description );
             }
         }
     }
@@ -506,6 +540,17 @@ PartitionViewStep::setConfigurationMap( const QVariantMap& configurationMap )
     else
     {
         gs->insert( "defaultFileSystemType", QStringLiteral( "ext4" ) );
+    }
+
+    if ( configurationMap.contains( "enableLuksAutomatedPartitioning" ) &&
+         configurationMap.value( "enableLuksAutomatedPartitioning" ).type() == QVariant::Bool )
+    {
+        gs->insert( "enableLuksAutomatedPartitioning",
+                    configurationMap.value( "enableLuksAutomatedPartitioning" ).toBool() );
+    }
+    else
+    {
+        gs->insert( "enableLuksAutomatedPartitioning", true );
     }
 
 

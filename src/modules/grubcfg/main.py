@@ -36,8 +36,10 @@ def modify_grub_default(partitions, root_mount_point, distributor):
     default_grub = os.path.join(default_dir, "grub")
     distributor_replace = distributor.replace("'", "'\\''")
     plymouth_bin = libcalamares.utils.target_env_call(["sh", "-c", "which plymouth"])
+    dracut_bin = libcalamares.utils.target_env_call(["sh", "-c", "which dracut"])
     use_splash = ""
     swap_uuid = ""
+    swap_outer_uuid = ""
 
     libcalamares.utils.debug("which plymouth exit code: {!s}".format(plymouth_bin))
 
@@ -46,15 +48,26 @@ def modify_grub_default(partitions, root_mount_point, distributor):
 
     cryptdevice_params = []
 
-    for partition in partitions:
-        if partition["fs"] == "linuxswap":
-            swap_uuid = partition["uuid"]
+    if dracut_bin == 0:
+        for partition in partitions:
+            if partition["fs"] == "linuxswap":
+                swap_uuid = partition["uuid"]
 
-        if partition["mountPoint"] == "/" and "luksMapperName" in partition:
-            cryptdevice_params = [
-                "cryptdevice=UUID={!s}:{!s}".format(partition["luksUuid"],
-                                                    partition["luksMapperName"]),
-                "root=/dev/mapper/{!s}".format(partition["luksMapperName"])
+            if partition["fs"] == "linuxswap" and "luksMapperName" in partition:
+                swap_outer_uuid = partition["luksUuid"]
+
+            if partition["mountPoint"] == "/" and "luksMapperName" in partition:
+                cryptdevice_params = ["rd.luks.uuid={!s}".format(partition["luksUuid"])]
+    else:
+        for partition in partitions:
+            if partition["fs"] == "linuxswap":
+                swap_uuid = partition["uuid"]
+
+            if partition["mountPoint"] == "/" and "luksMapperName" in partition:
+                cryptdevice_params = [
+                    "cryptdevice=UUID={!s}:{!s}".format(partition["luksUuid"],
+                                                        partition["luksMapperName"]),
+                    "root=/dev/mapper/{!s}".format(partition["luksMapperName"])
             ]
 
     kernel_params = ["quiet"]
@@ -68,7 +81,10 @@ def modify_grub_default(partitions, root_mount_point, distributor):
     if swap_uuid:
         kernel_params.append("resume=UUID={!s}".format(swap_uuid))
 
-    distributor_line = "GRUB_DISTRIBUTOR=\"{!s}\"".format(distributor_replace)
+    if dracut_bin == 0 and swap_outer_uuid:
+        kernel_params.append("rd.luks.uuid={!s}".format(swap_outer_uuid))
+
+    distributor_line = "GRUB_DISTRIBUTOR='{!s}'".format(distributor_replace)
 
     if not os.path.exists(default_dir):
         os.mkdir(default_dir)
@@ -126,7 +142,7 @@ def modify_grub_default(partitions, root_mount_point, distributor):
                 else:
                     escaped_value = str(value).replace("'", "'\\''")
 
-                lines.append("{!s}=\"{!s}\"".format(key, escaped_value))
+                lines.append("{!s}='{!s}'".format(key, escaped_value))
 
     if not have_kernel_cmd:
         kernel_cmd = "GRUB_CMDLINE_LINUX_DEFAULT=\"{!s}\"".format(" ".join(kernel_params))

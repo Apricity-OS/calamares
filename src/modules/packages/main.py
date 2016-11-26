@@ -18,6 +18,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with Calamares. If not, see <http://www.gnu.org/licenses/>.
 
+import subprocess
 import libcalamares
 from libcalamares.utils import check_target_env_call, target_env_call
 
@@ -91,6 +92,22 @@ class PackageManager:
         elif self.backend == "entropy":
             check_target_env_call(["equo", "rm"] + pkgs)
 
+    def update_db(self):
+        if self.backend == "packagekit":
+            check_target_env_call(["pkcon", "refresh"])
+        elif self.backend == "zypp":
+            check_target_env_call(["zypper", "update"])
+        elif self.backend == "urpmi":
+            check_target_env_call(["urpmi.update", "-a"])
+        elif self.backend == "apt":
+            check_target_env_call(["apt-get", "update"])
+        elif self.backend == "pacman":
+            check_target_env_call(["pacman", "-Sy"])
+        elif self.backend == "portage":
+            check_target_env_call(["emerge", "--sync"])
+        elif self.backend == "entropy":
+            check_target_env_call(["equo", "update"])
+
 
 def run_operations(pkgman, entry):
     """ Call package manager with given parameters.
@@ -101,8 +118,18 @@ def run_operations(pkgman, entry):
     for key in entry.keys():
         if key == "install":
             pkgman.install(entry[key])
+        elif key == "try_install":
+            try:
+                pkgman.install(entry[key])
+            except subprocess.CalledProcessError:
+                libcalamares.utils.debug("WARNING: could not install packages {}".format(", ".join(entry[key])))
         elif key == "remove":
             pkgman.remove(entry[key])
+        elif key == "try_remove":
+            try:
+                pkgman.remove(entry[key])
+            except subprocess.CalledProcessError:
+                libcalamares.utils.debug("WARNING: could not remove packages {}".format(", ".join(entry[key])))
         elif key == "localInstall":
             pkgman.install(entry[key], from_local=True)
 
@@ -120,6 +147,10 @@ def run():
 
     pkgman = PackageManager(backend)
     operations = libcalamares.job.configuration.get("operations", [])
+
+    update_db = libcalamares.job.configuration.get("update_db", False)
+    if update_db and libcalamares.globalstorage.value("hasInternet"):
+        pkgman.update_db()
 
     for entry in operations:
         run_operations(pkgman, entry)
